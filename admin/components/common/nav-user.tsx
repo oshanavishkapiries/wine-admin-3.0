@@ -36,15 +36,7 @@ type IUser = {
   __v: number;
 };
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string;
-    email: string;
-    avatar: string;
-  };
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar();
   const [userData, setUserData] = useState<IUser>();
   const userStr = Cookies.get('userInfo');
@@ -53,7 +45,7 @@ export function NavUser({
 
   useEffect(() => {
     setUserData(JSON.parse(userStr || '{}'));
-  }, []);
+  }, [userStr]);
 
   function handleLogout() {
     dispatch(clearUser());

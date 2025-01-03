@@ -22,14 +22,6 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { NavUser } from './nav-user';
 
-const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
-};
-
 export function AppSidebar() {
   return (
     <Sidebar>
@@ -79,7 +71,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser/>
       </SidebarFooter>
     </Sidebar>
   );

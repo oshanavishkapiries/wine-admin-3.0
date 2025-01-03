@@ -36,6 +36,7 @@ export function LoginForm({
       toast.success('Logged in successfully');
       router.push('/');
     } catch (error) {
+      console.log(error);
       toast.error('Invalid email or password');
     }
   };
