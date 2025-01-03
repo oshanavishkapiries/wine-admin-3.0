@@ -33,7 +33,7 @@ const data = {
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader>GOTHEM WINE</SidebarHeader>
+      <SidebarHeader></SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
@@ -63,9 +63,9 @@ export function AppSidebar() {
                         {item.subItems?.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
-                              <a href={subItem.url}>
+                              <Link href={subItem.url}>
                                 <span>{subItem.title}</span>
-                              </a>
+                              </Link>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}
