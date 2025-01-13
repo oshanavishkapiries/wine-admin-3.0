@@ -1,77 +1,122 @@
 'use client';
+import { useGetMetaQuery } from '@/features/api/metaSlice';
+import {
+  productSchema,
+  type ProductFormValues,
+} from './testProduct';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
-import DropDownForm from '@/components/form/dropDownForm';
-import InputForm from '@/components/form/InputForm';
-import React from 'react';
+const ProductAdd = () => {
+  const { data: metaData } = useGetMetaQuery(undefined, {
+    pollingInterval: 40000,
+    refetchOnMountOrArgChange: true,
+  });
 
-import { Option } from '@/components/ui/multiselect';
-import MultiSelectForm from '@/components/form/multiSelectForm';
-const frameworks: Option[] = [
-  { value: 'next.js', label: 'Next.js' },
-  { value: 'sveltekit', label: 'SvelteKit' },
-  { value: 'nuxt.js', label: 'Nuxt.js', disable: true },
-  { value: 'remix', label: 'Remix' },
-  { value: 'astro', label: 'Astro' },
-  { value: 'angular', label: 'Angular' },
-  { value: 'vue', label: 'Vue.js' },
-  { value: 'react', label: 'React' },
-  { value: 'ember', label: 'Ember.js' },
-  { value: 'gatsby', label: 'Gatsby' },
-  { value: 'eleventy', label: 'Eleventy', disable: true },
-  { value: 'solid', label: 'SolidJS' },
-  { value: 'preact', label: 'Preact' },
-  { value: 'qwik', label: 'Qwik' },
-  { value: 'alpine', label: 'Alpine.js' },
-  { value: 'lit', label: 'Lit' },
-];
+  const defaultValues = {
+    name: 'eded',
+    description: 'dede',
+    age: 12,
+  };
 
-const productsPage = () => {
+  const isUpdateMode = true;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ProductFormValues>({
+    resolver: zodResolver(productSchema),
+    defaultValues: isUpdateMode ? defaultValues : {},
+  });
+
+  const onSubmit = (data: ProductFormValues) => {
+    if (isUpdateMode) {
+      console.log('Updating product:', data);
+      // Call your update API here
+    } else {
+      console.log('Adding product:', data);
+      // Call your add API here
+    }
+  };
+
   return (
-    <div className="w-full p-5 grid grid-cols-2 gap-4 h-full">
-      <div className="w-full h-full">
-        <MultiSelectForm
-          className="custom-class"
-          title="Select Frameworks"
-          placeholder="Choose frameworks"
-          defaultOptions={frameworks}
-          defaultValue={[frameworks[0], frameworks[1]]}
-          onChange={(selectedOptions) =>
-            console.log('Selected options:', selectedOptions)
-          }
-          hideClearAllButton
-          hidePlaceholderWhenSelected
-          required
-        />
+    <div className="w-full h-full p-3">
+      <h1 className="text-2xl font-bold">
+        {isUpdateMode ? 'Update Product' : 'Add Product'}
+      </h1>
 
-        <InputForm
-          className="custom-class"
-          title="Email Address"
-          placeholder="Enter your email"
-          type="email"
-          onChange={(e) => console.log(e.target.value)}
-        />
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full">
+        <div className="grid grid-cols-3 gap-2 mt-3">
+          <div className="col-span-1 w-full space-y-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              {...register('name')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            {errors.name && (
+              <p className="text-sm text-red-500">{errors.name.message}</p>
+            )}
+          </div>
 
-        <InputForm
-          className="custom-class"
-          title="Email Address"
-          placeholder="Enter your email"
-          type="email"
-          onChange={(e) => console.log(e.target.value)}
-          defaultValue="example@example.com"
-          error={true}
-          errorMessage="This field is required"
-        />
+          <div className="col-span-1 w-full space-y-2">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Description
+            </label>
+            <input
+              type="text"
+              id="description"
+              {...register('description')}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            {errors.description && (
+              <p className="text-sm text-red-500">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
 
-        <DropDownForm
-          required={true}
-          className="w-full"
-          title="Choose an option"
-          options={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
-          onChange={(value) => console.log('Selected option:', value)}
-        />
-      </div>
+          <div className="col-span-1 w-full space-y-2">
+            <label
+              htmlFor="age"
+              className="block text-sm font-medium text-gray-700"
+            >
+              Age
+            </label>
+            <input
+              type="number"
+              id="age"
+              {...register('age', { valueAsNumber: true })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            {errors.age && (
+              <p className="text-sm text-red-500">{errors.age.message}</p>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <button
+            type="submit"
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+          >
+            {isUpdateMode ? 'Update Product' : 'Add Product'}
+          </button>
+        </div>
+      </form>
     </div>
   );
 };
 
-export default productsPage;
+export default ProductAdd;

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import ReduxProvider from '@/components/common/redux-provider';
-import { Toaster } from "sonner";
+import { Toaster } from 'sonner';
+import MetaDataProvider from '@/components/common/mateData-provider';
 
 export const metadata: Metadata = {
   title: 'GOTHEM WINE ADMIN',
@@ -16,7 +17,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          <MetaDataProvider>{children}</MetaDataProvider>
+        </ReduxProvider>
         <Toaster position="top-center" richColors />
       </body>
     </html>
