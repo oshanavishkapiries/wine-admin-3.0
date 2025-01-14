@@ -4,7 +4,13 @@ import InputForm from '@/components/form/InputForm';
 import MultiselectForm from '@/components/form/MultiselectForm';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
 import { ProductFormValues, productSchema } from '@/lib/validations/product';
-import { countryOptions, regionOptions } from '@/utils/productAddFormUtils';
+import {
+  categoryOptions,
+  countryOptions,
+  regionOptions,
+  subCategoryOptions,
+  subRegionOptions,
+} from '@/utils/productAddFormUtils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -31,6 +37,9 @@ const ProductAdd = () => {
       vintage: '',
       country: '',
       regions: [],
+      subRegions: [],
+      categories: [],
+      subCategories: [],
     },
   });
 
@@ -42,10 +51,6 @@ const ProductAdd = () => {
 
   console.log('formValues', formValues);
   console.log('metaData', metaData);
-
-  useEffect(() => {
-    console.log('regionOptions', regionOptions(metaData, formValues.country));
-  }, [formValues.country]);
 
   return (
     <div className="w-full h-full p-3">
@@ -105,9 +110,8 @@ const ProductAdd = () => {
           </div>
           {/* center */}
           <div className="col-span-1 w-full space-y-2">
-
-             {/* country */}
-             <Dropdown
+            {/* country */}
+            <Dropdown
               disabled={!metaData}
               label="Country"
               options={countryOptions(metaData)}
@@ -136,7 +140,45 @@ const ProductAdd = () => {
               error={errors.regions?.message}
               required
             />
-           
+            {/* subRegions */}
+            <MultiselectForm
+              label={'Sub Regions'}
+              disabled={!formValues.country}
+              options={subRegionOptions(metaData, formValues.regions)}
+              onSelect={(value) => {
+                console.log('value', value);
+              }}
+              error={errors.subRegions?.message}
+            />
+
+            {/* category */}
+            <MultiselectForm
+              label={'Category'}
+              disabled={!metaData}
+              options={categoryOptions(metaData)}
+              onSelect={(value) => {
+                reset({
+                  ...formValues,
+                  categories: value.map((category) => category.value),
+                });
+              }}
+              error={errors.categories?.message}
+              required
+            />
+
+            {/* Varietal */}
+            <MultiselectForm
+              label={'Varietal'}
+              disabled={!formValues.categories.length}
+              options={subCategoryOptions(metaData, formValues.categories)}
+              onSelect={(value) => {
+                reset({
+                  ...formValues,
+                  subCategories: value.map((subCategory) => subCategory.value),
+                });
+              }}
+              error={errors.subCategories?.message}
+            />
           </div>
           {/* right */}
           <div className="col-span-1 w-full space-y-2"></div>

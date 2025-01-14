@@ -29,7 +29,6 @@ export default function MultiselectForm({
       <Label htmlFor={id}>
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
-      {error && <p className="mt-2 text-xs text-destructive">{error}</p>}
       <MultipleSelector
         key={JSON.stringify(options)}
         disabled={disabled}
@@ -44,6 +43,7 @@ export default function MultiselectForm({
         emptyIndicator={<p className="text-center text-sm">No results found</p>}
         onChange={onSelect}
       />
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
 }
