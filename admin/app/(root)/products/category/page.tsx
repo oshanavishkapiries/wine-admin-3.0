@@ -1,9 +1,9 @@
 import React from 'react'
 
-const page = () => {
+const CategoryPage = () => {
   return (
-    <div>page</div>
+    <div>CategoryPage</div>
   )
 }
 
-export default page
+export default CategoryPage
