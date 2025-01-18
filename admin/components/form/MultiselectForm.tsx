@@ -1,6 +1,6 @@
 import { Label } from '@/components/ui/label';
 import MultipleSelector, { Option } from '@/components/ui/multiselect';
-import { useEffect, useId, useState } from 'react';
+import {  useId } from 'react';
 
 interface IMultiselectFormProps {
   label: string;

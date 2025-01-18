@@ -12,6 +12,7 @@ import { loginSchema, type LoginInput } from '@/lib/validations/auth';
 import { useDispatch } from 'react-redux';
 import { setUser } from '@/features/reducer/authSlice';
 import { useLoginMutation } from '@/features/api/authSlice';
+import Image from 'next/image';
 
 export function LoginForm({
   className,
@@ -84,10 +85,12 @@ export function LoginForm({
             </div>
           </form>
           <div className="relative hidden bg-muted md:block">
-            <img
+            <Image
               src="/auth-img.webp"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              width={500}
+              height={500}
             />
           </div>
         </CardContent>

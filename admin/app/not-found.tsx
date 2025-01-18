@@ -7,8 +7,8 @@ const NotFoundPage = () => {
         <h2 className="mb-2 text-2xl font-semibold">Page Not Found</h2>
 
         <p className="mb-8 text-muted-foreground">
-          Sorry, we couldn't find the page you're looking for. Perhaps you've
-          mistyped the URL or the page has been moved.
+          Sorry, we couldn&apos;t find the page you&apos;re looking for. Perhaps
+          you&apos;ve mistyped the URL or the page has been moved.
         </p>
       </div>
 

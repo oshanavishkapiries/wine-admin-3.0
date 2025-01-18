@@ -25,43 +25,52 @@ export default function Dropdown({
   const [clickedLabel, setclickedLabel] = useState<string>();
 
   useEffect(() => {
-    setclickedLabel(defaultValue || 'Select an option');
-  }, [defaultValue]);
+    if (defaultValue) {
+      const option = options?.find(opt => opt.value === defaultValue);
+      if (option) {
+        setclickedLabel(option.label);
+      }
+    }
+  }, [defaultValue, options]);
 
   return (
-    <DropdownMenu>
+    <div className="space-y-2">
       <Label htmlFor={id}>
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant={buttonVariant}
-          className={className + ' w-full'}
-          disabled={disabled}
-        >
-          {clickedLabel}
-          <ChevronDown
-            className="-me-1 ms-2 opacity-60"
-            size={16}
-            strokeWidth={2}
-            aria-hidden="true"
-          />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="min-w-[--radix-dropdown-menu-trigger-width]">
-        {options?.map((option) => (
-          <DropdownMenuItem
-            key={option.value}
-            onSelect={() => {
-              onSelect(option.value);
-              setclickedLabel(option.label);
-            }}
+      
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant={buttonVariant}
+            className={className + ' w-full'}
+            disabled={disabled}
           >
-            {option.label}
-          </DropdownMenuItem>
-        ))}
-      </DropdownMenuContent>
-      {error && <p className="text-sm text-red-500">{error}</p>}
-    </DropdownMenu>
+            {clickedLabel || 'Select an option'}
+            <ChevronDown
+              className="-me-1 ms-2 opacity-60"
+              size={16}
+              strokeWidth={2}
+              aria-hidden="true"
+            />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="min-w-[--radix-dropdown-menu-trigger-width]">
+          {options?.map((option) => (
+            <DropdownMenuItem
+              key={option.value}
+              onSelect={() => {
+                onSelect(option.value);
+                setclickedLabel(option.label);
+              }}
+            >
+              {option.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+
+      {error && <p className="text-sm text-destructive">{error}</p>}
+    </div>
   );
 }
