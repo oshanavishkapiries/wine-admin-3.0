@@ -1,13 +1,10 @@
-'use client';
+"use client"
 
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
-import { Pencil, Trash } from 'lucide-react';
-import { useDeleteSubCategoryMutation } from '@/features/api/categorySlice';
+import { Edit, Trash } from 'lucide-react';
 import { toast } from 'sonner';
-import { CategoryPopup } from './categoryPopup';
 import { useRouter } from 'next/navigation';
-import { useGetMetaQuery } from '@/features/api/metaSlice';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -20,85 +17,66 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export type Category = {
-  id: string;
-  SubCategory: string;
-  Category: string;
-  ProfitMargin: string;
-  categoryId: string;
+export type Product = {
+  _id: string;
+  name: string;
+  qtyOnHand: number;
+  unitPrice: number;
 };
 
-export const columns: ColumnDef<Category>[] = [
+export const columns: ColumnDef<Product>[] = [
   {
-    accessorKey: 'SubCategory',
-    header: 'Sub Category',
+    accessorKey: 'name',
+    header: 'Name',
   },
   {
-    accessorKey: 'Category',
-    header: 'Category',
+    accessorKey: 'qtyOnHand',
+    header: 'Quantity',
   },
   {
-    accessorKey: 'ProfitMargin',
-    header: 'Profit Margin',
-  },
-  {
-    accessorKey: '_',
-    header: '',
+    accessorKey: 'unitPrice',
+    header: 'Unit Price',
+    cell: ({ row }) => `$${row.original.unitPrice.toFixed(2)}`,
   },
   {
     id: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
-      const category = row.original;
-      const [deleteSubCategory] = useDeleteSubCategoryMutation();
+      const product = row.original;
       const router = useRouter();
-      const { refetch: refetchMeta } = useGetMetaQuery({});
 
       const handleDelete = async () => {
         try {
-          await deleteSubCategory({ id: category.id }).unwrap();
-          toast.success('Category deleted successfully');
-          // Refresh meta data
-          await refetchMeta();
+          // Add your delete API call here
+          toast.success('Product deleted successfully');
           router.refresh();
         } catch (error) {
           console.log(error);
-          toast.error('Failed to delete category');
+          toast.error('Failed to delete product');
         }
       };
 
       return (
         <div className="flex items-center gap-2">
-          <CategoryPopup
-            mode="edit"
-            title="Edit Category"
-            description="Edit category details"
-            defaultValues={{
-              categoryId: category.categoryId,
-              subCategoryName: category.SubCategory,
-              margin: parseInt(category.ProfitMargin),
-              id: category.id,
-            }}
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 hover:bg-muted"
+            onClick={() => router.push(`/products/edit/${product._id}`)}
+            title="Edit product"
           >
-            <Button
-              variant="ghost"
-              className="flex h-8 w-8 p-0 hover:bg-muted"
-              title="Edit category"
-            >
-              <Pencil className="h-4 w-4" />
-              <span className="sr-only">Edit category</span>
-            </Button>
-          </CategoryPopup>
+            <Edit className="h-4 w-4" />
+            <span className="sr-only">Edit product</span>
+          </Button>
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button
                 variant="ghost"
                 className="flex h-8 w-8 p-0 hover:bg-muted text-destructive hover:text-destructive"
-                title="Delete category"
+                title="Delete product"
               >
                 <Trash className="h-4 w-4" />
-                <span className="sr-only">Delete category</span>
+                <span className="sr-only">Delete product</span>
               </Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -106,7 +84,7 @@ export const columns: ColumnDef<Category>[] = [
                 <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                 <AlertDialogDescription>
                   This action cannot be undone. This will permanently delete the
-                  category &quot;{category.SubCategory}&quot; and remove it from our servers.
+                  product "{product.name}" and remove it from our servers.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

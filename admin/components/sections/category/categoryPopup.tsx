@@ -24,19 +24,7 @@ import {
   useUpdateSubCategoryNameMutation,
 } from '@/features/api/categorySlice';
 import Dropdown from '@/components/form/DropDownForm';
-
-interface CategoryPopupProps {
-  children: React.ReactNode;
-  mode?: 'add' | 'edit';
-  title?: string;
-  description?: string;
-  defaultValues?: {
-    id?: string;
-    categoryId?: string;
-    subCategoryName?: string;
-    margin?: number;
-  };
-}
+import { CategoryPopupProps } from '@/types';
 
 export function CategoryPopup({
   children,

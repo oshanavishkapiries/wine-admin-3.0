@@ -2,6 +2,7 @@
 import Dropdown from '@/components/form/DropDownForm';
 import InputForm from '@/components/form/InputForm';
 import MultiselectForm from '@/components/form/MultiselectForm';
+import { Button } from '@/components/ui/button';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
 import { ProductFormValues, productSchema } from '@/lib/validations/product';
 import {
@@ -12,6 +13,8 @@ import {
   subRegionOptions,
 } from '@/utils/productAddFormUtils';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowLeftIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 
 const ProductAdd = () => {
@@ -19,6 +22,8 @@ const ProductAdd = () => {
     pollingInterval: 40000,
     refetchOnMountOrArgChange: true,
   });
+
+  const router = useRouter();
 
   const {
     register,
@@ -53,7 +58,14 @@ const ProductAdd = () => {
 
   return (
     <div className="w-full h-full p-3">
-      <h1 className="text-2xl font-bold">title</h1>
+      <div className="w-full flex justify-between items-center">
+        <div className="flex items-center gap-5">
+          <Button variant="outline" onClick={() => router.back()}>
+            <ArrowLeftIcon className="w-4 h-4" />
+          </Button>
+          <h1 className="text-2xl font-bold">title</h1>
+        </div>
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="w-full h-full">
         {/* section */}
