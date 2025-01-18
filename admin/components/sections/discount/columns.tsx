@@ -59,8 +59,8 @@ export const columns: ColumnDef<Discount>[] = [
     cell: ({ row }) => `${row.original.packDiscount}%`,
   },
   {
-    accessorKey: 'details',
-    header: 'Details',
+    accessorKey: '_',
+    header: '',
   },
   {
     id: 'actions',
@@ -101,7 +101,7 @@ export const columns: ColumnDef<Discount>[] = [
       };
 
       return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <Switch
             checked={isActive}
             onCheckedChange={handleStateChange}

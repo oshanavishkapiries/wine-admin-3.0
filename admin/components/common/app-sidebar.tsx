@@ -38,7 +38,7 @@ export function AppSidebar() {
                   className="group/collapsible"
                 >
                   <SidebarMenuItem>
-                    <Link href={item.url} passHref>
+                    <Link href={item.url} prefetch={true} passHref>
                       <SidebarMenuButton tooltip={item.title}>
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
@@ -55,7 +55,7 @@ export function AppSidebar() {
                         {item.subItems?.map((subItem) => (
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
-                              <Link href={subItem.url}>
+                              <Link href={subItem.url} prefetch={true}>
                                 <span>{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>

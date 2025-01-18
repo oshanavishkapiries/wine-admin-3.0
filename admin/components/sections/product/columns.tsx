@@ -1,33 +1,37 @@
-"use client"
+'use client';
 
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
-import { Edit, Trash } from 'lucide-react';
-import { toast } from 'sonner';
+import { Edit, Eye } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import ProductDeletePopup from './product-delete-popup';
 
 export type Product = {
   _id: string;
   name: string;
   qtyOnHand: number;
   unitPrice: number;
+  categories: any[];
+  size: {
+    name: string;
+  };
 };
 
 export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: 'name',
     header: 'Name',
+  },
+  {
+    accessorKey: 'category',
+    header: 'Category',
+    cell: ({ row }) =>
+      `${row.original.categories.map((category: any) => category.name).join(', ')}`,
+  },
+  {
+    accessorKey: 'size',
+    header: 'Size',
+    cell: ({ row }) => `${row.original.size.name}`,
   },
   {
     accessorKey: 'qtyOnHand',
@@ -45,19 +49,18 @@ export const columns: ColumnDef<Product>[] = [
       const product = row.original;
       const router = useRouter();
 
-      const handleDelete = async () => {
-        try {
-          // Add your delete API call here
-          toast.success('Product deleted successfully');
-          router.refresh();
-        } catch (error) {
-          console.log(error);
-          toast.error('Failed to delete product');
-        }
-      };
-
       return (
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            className="flex h-8 w-8 p-0 hover:bg-muted"
+            onClick={() => router.push(`/products/view/${product._id}`)}
+            title="View product"
+          >
+            <Eye className="h-4 w-4" />
+            <span className="sr-only">View product</span>
+          </Button>
+
           <Button
             variant="ghost"
             className="flex h-8 w-8 p-0 hover:bg-muted"
@@ -68,36 +71,7 @@ export const columns: ColumnDef<Product>[] = [
             <span className="sr-only">Edit product</span>
           </Button>
 
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="ghost"
-                className="flex h-8 w-8 p-0 hover:bg-muted text-destructive hover:text-destructive"
-                title="Delete product"
-              >
-                <Trash className="h-4 w-4" />
-                <span className="sr-only">Delete product</span>
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete the
-                  product "{product.name}" and remove it from our servers.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleDelete}
-                  className="bg-destructive hover:bg-destructive/90"
-                >
-                  Delete
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <ProductDeletePopup product={product} />
         </div>
       );
     },

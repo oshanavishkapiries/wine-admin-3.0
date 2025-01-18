@@ -34,7 +34,7 @@ export default function Dropdown({
   }, [defaultValue, options]);
 
   return (
-    <div className="space-y-2">
+    <div className={`${className} space-y-2`}>
       <Label htmlFor={id}>
         {label} {required && <span className="text-destructive">*</span>}
       </Label>
