@@ -8,6 +8,17 @@ import { toast } from 'sonner';
 import { CategoryPopup } from './categoryPopup';
 import { useRouter } from 'next/navigation';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export type Category = {
   id: string;
@@ -75,15 +86,36 @@ export const columns: ColumnDef<Category>[] = [
             </Button>
           </CategoryPopup>
 
-          <Button
-            variant="ghost"
-            className="flex h-8 w-8 p-0 hover:bg-muted text-destructive hover:text-destructive"
-            onClick={handleDelete}
-            title="Delete category"
-          >
-            <Trash className="h-4 w-4" />
-            <span className="sr-only">Delete category</span>
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="ghost"
+                className="flex h-8 w-8 p-0 hover:bg-muted text-destructive hover:text-destructive"
+                title="Delete category"
+              >
+                <Trash className="h-4 w-4" />
+                <span className="sr-only">Delete category</span>
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the
+                  category "{category.SubCategory}" and remove it from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-destructive hover:bg-destructive/90"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       );
     },
