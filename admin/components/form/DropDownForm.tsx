@@ -35,10 +35,13 @@ export default function Dropdown({
 
   return (
     <div className={`${className} space-y-2`}>
-      <Label htmlFor={id}>
-        {label} {required && <span className="text-destructive">*</span>}
-      </Label>
-      
+     
+      {label && (
+        <Label htmlFor={id}>
+          {label} {required && <span className="text-destructive">*</span>}
+        </Label>
+      )}
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button

@@ -56,6 +56,7 @@ export function AppSidebar() {
                           <SidebarMenuSubItem key={subItem.title}>
                             <SidebarMenuSubButton asChild>
                               <Link href={subItem.url} prefetch={true}>
+                                {subItem.icon && <subItem.icon />}
                                 <span>{subItem.title}</span>
                               </Link>
                             </SidebarMenuSubButton>

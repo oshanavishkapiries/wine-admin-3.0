@@ -40,7 +40,7 @@ const ProductPage = () => {
           {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
         </h1>
 
-        <div className="flex items-center gap-4 mb-6">
+        <div className="flex items-center gap-4">
           <div className="relative flex-1 w-[350px]">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
@@ -52,7 +52,7 @@ const ProductPage = () => {
           </div>
           <Dropdown
             disabled={!metaData}
-            className="w-[250px] space-y-0"
+            className="w-[250px]"
             label=""
             options={categoryOptions}
             onSelect={(value) => {

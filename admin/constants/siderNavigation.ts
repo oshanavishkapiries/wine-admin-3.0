@@ -1,4 +1,4 @@
-import { BaggageClaim, Box, LayoutDashboard } from 'lucide-react';
+import { BaggageClaim, Box, LayoutDashboard, Percent, ListFilter } from 'lucide-react';
 
 type SiderNavigationItem = {
   title: string;
@@ -21,12 +21,14 @@ export const siderNavigation: SiderNavigationItem[] = [
     icon: Box,
     subItems: [
       {
-        title: 'Discount Management',
+        title: 'Discount',
         url: '/products/discount',
+        icon: Percent,
       },
       {
-        title: 'Category Management',
+        title: 'Category',
         url: '/products/category',
+        icon: ListFilter,
       },
     ],
   },
