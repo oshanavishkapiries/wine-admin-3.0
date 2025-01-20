@@ -71,6 +71,7 @@ export function EditProfitPopup({
       setOpen(false);
       reset();
     } catch (error) {
+      console.log('error: ', error);
       toast.error('Failed to update margin');
     }
   };

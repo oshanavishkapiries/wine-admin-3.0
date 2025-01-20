@@ -10,18 +10,11 @@ export const productSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
   country: z.string().min(1, 'Country is required'),
-  regions: z
-    .array(z.string().min(1, 'Region ID is required'))
-    .nonempty('At least one region is required'),
-  subRegions: z.array(z.string()).optional(),
-  categories: z
-    .array(z.string().min(1, 'Category ID is required'))
-    .nonempty('At least one category is required'),
-  subCategories: z.array(z.string()).optional(),
-  vintage: z
-    .string()
-    .min(4, 'Vintage must be 4 digits')
-    .max(4, 'Vintage must be 4 digits'),
+  regions: z.string().optional(),
+  subRegions: z.string().optional(),
+  categories: z.string().optional(),
+  subCategories: z.string().optional(),
+  vintage: z.string().optional(),
   dryness: z.string().min(1, 'Dryness is required'),
   size: z.string().min(1, 'Size is required'),
   type: z
@@ -29,7 +22,7 @@ export const productSchema = z.object({
     .nonempty('At least one type is required'),
   abv: z
     .number()
-    .min(0, 'ABV cannot be negative')
+    .min(1, 'ABV cannot be less than 1%')
     .max(100, 'ABV cannot exceed 100%'),
   rating: z
     .number()

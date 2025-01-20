@@ -91,6 +91,7 @@ export function AddSubcategory({
       reset();
       setOpen(false);
     } catch (error) {
+      console.log('error: ', error);
       toast.error(
         mode === 'add'
           ? 'Failed to add subcategory'

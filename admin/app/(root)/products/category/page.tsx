@@ -10,7 +10,7 @@ import { useGetMetaQuery } from '@/features/api/metaSlice';
 import { getCategories, getSubCategory } from '@/utils/categoryUtils';
 
 export default function CategoryPage() {
-  const { data: metaData, isLoading } = useGetMetaQuery({});
+  const { data: metaData } = useGetMetaQuery({});
   console.log('metaData: ', metaData);
 
 

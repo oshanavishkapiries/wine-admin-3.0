@@ -1,16 +1,11 @@
 'use client';
 import Dropdown from '@/components/form/DropDownForm';
 import InputForm from '@/components/form/InputForm';
-import MultiselectForm from '@/components/form/MultiselectForm';
 import { Button } from '@/components/ui/button';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
 import { ProductFormValues, productSchema } from '@/lib/validations/product';
 import {
-  categoryOptions,
   countryOptions,
-  regionOptions,
-  subCategoryOptions,
-  subRegionOptions,
 } from '@/utils/productAddFormUtils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeftIcon } from 'lucide-react';
@@ -29,7 +24,7 @@ const ProductAdd = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
     watch,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
@@ -40,10 +35,10 @@ const ProductAdd = () => {
       rating: 0,
       vintage: '',
       country: '',
-      regions: [],
-      subRegions: [],
-      categories: [],
-      subCategories: [],
+      regions: '',
+      subRegions: '',
+      categories: '',
+      subCategories: '',
     },
   });
 
@@ -63,7 +58,7 @@ const ProductAdd = () => {
           <Button variant="outline" onClick={() => router.back()}>
             <ArrowLeftIcon className="w-4 h-4" />
           </Button>
-          <h1 className="text-2xl font-bold">title</h1>
+          <h1 className="text-2xl font-bold uppercase">Add Product</h1>
         </div>
       </div>
 
@@ -127,68 +122,11 @@ const ProductAdd = () => {
               label="Country"
               options={countryOptions(metaData)}
               onSelect={(value) => {
-                reset({
-                  ...formValues,
-                  country: value,
-                  regions: [],
-                });
+                console.log('value: ', value);
               }}
               buttonVariant="outline"
               error={errors.country?.message}
               required
-            />
-            {/* regions */}
-            <MultiselectForm
-              label={'Regions'}
-              disabled={!formValues.country}
-              options={regionOptions(metaData, formValues.country)}
-              onSelect={(value) => {
-                reset({
-                  ...formValues,
-                  regions: value.map((region) => region.value),
-                });
-              }}
-              error={errors.regions?.message}
-              required
-            />
-            {/* subRegions */}
-            <MultiselectForm
-              label={'Sub Regions'}
-              disabled={!formValues.country}
-              options={subRegionOptions(metaData, formValues.regions)}
-              onSelect={(value) => {
-                console.log('value', value);
-              }}
-              error={errors.subRegions?.message}
-            />
-
-            {/* category */}
-            <MultiselectForm
-              label={'Category'}
-              disabled={!metaData}
-              options={categoryOptions(metaData)}
-              onSelect={(value) => {
-                reset({
-                  ...formValues,
-                  categories: value.map((category) => category.value),
-                });
-              }}
-              error={errors.categories?.message}
-              required
-            />
-
-            {/* Varietal */}
-            <MultiselectForm
-              label={'Varietal'}
-              disabled={!formValues.categories.length}
-              options={subCategoryOptions(metaData, formValues.categories)}
-              onSelect={(value) => {
-                reset({
-                  ...formValues,
-                  subCategories: value.map((subCategory) => subCategory.value),
-                });
-              }}
-              error={errors.subCategories?.message}
             />
           </div>
           {/* right */}
