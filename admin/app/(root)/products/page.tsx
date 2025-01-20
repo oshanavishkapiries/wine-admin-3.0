@@ -31,6 +31,7 @@ const ProductPage = () => {
   });
 
   const categoryOptions = getCategoryOptions(metaData);
+  
 
   return (
     <div className="container mx-auto p-10">
@@ -69,7 +70,7 @@ const ProductPage = () => {
 
       <DataTable
         columns={columns}
-        data={getProductsData(products || [])}
+        data={getProductsData(products) || []}
         pageCount={getTotalPages(products, pagination.pageSize)}
         onPaginationChange={setPagination}
       />

@@ -20,3 +20,7 @@ export const getCategoryOptions = (metaData: any) => {
     label: item.name,
   }));
 };
+
+export const getCategories = (metaData: any) => {
+  return metaData?.data?.wineCategories;
+};

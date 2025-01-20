@@ -11,7 +11,9 @@ export type Product = {
   name: string;
   qtyOnHand: number;
   unitPrice: number;
-  categories: any[];
+  categories: {
+    name: string;
+  };
   size: {
     name: string;
   };
@@ -25,8 +27,7 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: 'category',
     header: 'Category',
-    cell: ({ row }) =>
-      `${row.original.categories.map((category: any) => category.name).join(', ')}`,
+    cell: ({ row }) => `${row.original.categories.name}`,
   },
   {
     accessorKey: 'size',

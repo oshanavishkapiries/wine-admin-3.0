@@ -1,48 +1,52 @@
 'use client';
+
 import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit } from 'lucide-react';
-import DeletePopup from './deletePopup';
-import { AddSubcategory } from './add';
+import { EditProfitPopup } from './editPopup';
 
-export type SubCategory = {
+export type ProfitMargin = {
   _id: string;
   name: string;
-  categoryId: string;
+  margin: string;
 };
 
-export const subCategoryColumns: ColumnDef<SubCategory>[] = [
+export const profitMarginColumns: ColumnDef<ProfitMargin>[] = [
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: 'Category',
+  },
+  {
+    accessorKey: 'margin',
+    header: 'Margin (%)',
+    cell: ({ row }) => {
+      return `${row.original.margin}%`;
+    },
   },
   {
     id: 'actions',
     header: 'Actions',
     cell: ({ row }) => {
-      const subCategory = row.original;
+      const category = row.original;
 
       return (
         <div className="flex items-center gap-2">
-          <AddSubcategory
-            mode="edit"
+          <EditProfitPopup
             initialData={{
-              id: subCategory._id,
-              name: subCategory.name,
-              categoryId: subCategory.categoryId,
+              id: category._id,
+              margin: category.margin,
+              name: category.name,
             }}
           >
             <Button
               variant="ghost"
               className="flex h-8 w-8 p-0 hover:bg-muted"
-              title="Edit sub-category"
+              title="Edit margin"
             >
               <Edit className="h-4 w-4" />
-              <span className="sr-only">Edit sub-category</span>
+              <span className="sr-only">Edit margin</span>
             </Button>
-          </AddSubcategory>
-
-          <DeletePopup subCategoryId={subCategory._id} />
+          </EditProfitPopup>
         </div>
       );
     },
