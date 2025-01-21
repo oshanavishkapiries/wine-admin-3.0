@@ -3,14 +3,22 @@ import { apiSlice } from "./apiSlice";
 export const imageSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getImage: builder.query({
-      query: () => ({
-        url: "/images/get-images",
+      query: (imageUrl) => ({
+        url: `/images/${imageUrl}`,
         method: "GET",
       }),
-      providesTags: ["Images"],
+      transformResponse: (response: any) => response.data,
+    }),
+
+    uploadImage: builder.mutation<{ imageUrl: string }, FormData>({
+      query: (formData) => ({
+        url: "/images/upload-image",
+        method: "POST",
+        body: formData,
+      }),
       transformResponse: (response: any) => response.data,
     }),
   }),
 });
 
-export const { useGetImageQuery } = imageSlice;
+export const { useGetImageQuery, useUploadImageMutation } = imageSlice;

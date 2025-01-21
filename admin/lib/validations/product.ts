@@ -12,14 +12,12 @@ export const productSchema = z.object({
   country: z.string().min(1, 'Country is required'),
   regions: z.string().optional(),
   subRegions: z.string().optional(),
-  categories: z.string().optional(),
+  categories: z.string().min(1, 'At least one category is required'),
   subCategories: z.string().optional(),
   vintage: z.string().optional(),
   dryness: z.string().min(1, 'Dryness is required'),
   size: z.string().min(1, 'Size is required'),
-  type: z
-    .array(z.string().min(1, 'Type ID is required'))
-    .nonempty('At least one type is required'),
+  type: z.array(z.string()).optional(),
   abv: z
     .number()
     .min(1, 'ABV cannot be less than 1%')
@@ -28,8 +26,8 @@ export const productSchema = z.object({
     .number()
     .min(0, 'Rating cannot be negative')
     .max(5, 'Rating cannot exceed 5'),
-  greatForGift: z.boolean(),
-  image: z.string().url('Image must be a valid URL').optional(),
+  greatForGift: z.boolean().optional(),
+  image: z.string().url('Image is required').optional(),
   unitPrice: z.number().min(0, 'Unit price cannot be negative'),
   unitCost: z.number().min(0, 'Unit cost cannot be negative'),
   qtyOnHand: z.number().min(0, 'Quantity on hand cannot be negative'),
