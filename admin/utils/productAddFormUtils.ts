@@ -72,3 +72,17 @@ export const typeOptions = (metaData: any) => {
     label: type.name,
   }));
 };
+
+export const getCategoryById = (metaData: any, categoryId: string | undefined) => {
+  return metaData?.data?.wineCategories?.find(
+    (category: any) => category._id === categoryId
+  );
+};
+
+
+export const categoryProfitMargin = (categoryId: string | undefined, metaData: any) => {
+  const category = metaData?.data?.wineCategories?.find(
+    (category: any) => category._id === categoryId
+  );
+  return category?.margin;
+};

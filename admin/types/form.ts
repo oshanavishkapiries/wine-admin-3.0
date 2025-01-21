@@ -6,6 +6,9 @@ export interface InputFormProps {
   register?: any;
   error?: string;
   className?: string;
+  value?: string | number;
+  description?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 

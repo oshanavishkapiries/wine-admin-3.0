@@ -47,7 +47,7 @@ export const productSlice = apiSlice.injectEndpoints({
       query: (data) => ({
         url: "/products/add",
         method: "POST",
-        body: data.data,
+        body: data,
       }),
       invalidatesTags: ["Products"],
     }),

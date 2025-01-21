@@ -6,9 +6,12 @@ import InputForm from '@/components/form/InputForm';
 import MultiselectForm from '@/components/form/MultiselectForm';
 import { Button } from '@/components/ui/button';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
+import { useProductCreateMutation } from '@/features/api/productSlice';
+import { useProductAddPriceCalculator } from '@/hooks/product-add-price-calculator';
 import { ProductFormValues, productSchema } from '@/lib/validations/product';
 import {
   categoriesOptions,
+  categoryProfitMargin,
   countryOptions,
   drynessOptions,
   regionOptions,
@@ -20,15 +23,33 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeftIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 const ProductAdd = () => {
   const { data: metaData } = useGetMetaQuery(undefined, {
     pollingInterval: 40000,
     refetchOnMountOrArgChange: true,
   });
-
+  const [createProduct, { isLoading }] = useProductCreateMutation();
   const router = useRouter();
+  const {
+    caseCount,
+    setCaseCount,
+    bottleCountPerCase,
+    setBottleCountPerCase,
+    perCaseBuyingCost,
+    setPerCaseBuyingCost,
+    plus,
+    setPlus,
+    perBottleCost,
+    totalCost,
+    setPerBottleCost,
+    setTotalCost,
+    qty,
+    setQty,
+  } = useProductAddPriceCalculator();
 
   const {
     register,
@@ -54,17 +75,54 @@ const ProductAdd = () => {
       type: [],
       image: '',
       greatForGift: false,
+      qtyOnHand: 0,
+      unitPrice: 0,
+      unitCost: 0,
+      isPack: false,
+      pack: [],
+      inStock: false,
+      isActive: false,
     },
   });
 
-  const onSubmit = (data: ProductFormValues) => {
-    console.log('data', data);
-  };
-
   const formValues = watch();
+  const [profitMargin, setProfitMargin] = useState('');
+  const [retailPrice, setRetailPrice] = useState('');
+  useEffect(() => {
+    if (qty) {
+      reset({
+        ...formValues,
+        qtyOnHand: Number(qty),
+      });
+    }
+    if (perBottleCost) {
+      reset({
+        ...formValues,
+        unitCost: Number(perBottleCost),
+      });
+    }
+    if (formValues.categories) {
+      setProfitMargin(categoryProfitMargin(formValues.categories, metaData));
+    }
+    if (formValues.unitCost) {
+      setRetailPrice(
+        String(formValues.unitCost * (1 + Number(profitMargin) / 100))
+      );
+    }
+  }, [qty, formValues.categories, formValues.unitCost, perBottleCost]);
 
-  console.log('formValues', formValues);
-  console.log('metaData', metaData);
+  const onSubmit = async (data: any) => {
+    try {
+      const res = await createProduct(data);
+      if (res.data) {
+        toast.success('Product created successfully');
+      }
+      console.log(res);
+    } catch (error) {
+      toast.error('Something went wrong');
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full h-full p-3">
@@ -285,61 +343,111 @@ const ProductAdd = () => {
         {/* pricing */}
         <div className="w-full border-b border-primary mt-4"></div>
         <h2 className="text-md font-bold uppercase my-4">Product Pricing</h2>
-        <div className="bg-background w-full h-auto p-2 space-y-2 space-x-2">
+        {/* receiving */}
+        <div className="bg-background w-full h-auto p-2 space-y-2 shadow">
           <div className="w-full h-full">
             <h2 className="text-md font-bold uppercase">Resiving</h2>
           </div>
-          <div className="w-full h-full flex flex-row gap-2">
+          <div className="w-full h-full grid grid-cols-4 gap-2">
             <InputForm
               label={'Case count'}
               placeholder={'Case count'}
               type={'number'}
-              register={register('caseCount', { valueAsNumber: true })}
-              error={errors.caseCount?.message}
-              required
+              value={caseCount.toString()}
+              onChange={(e) => setCaseCount(e.target.value)}
             />
             <InputForm
-              label={'Product Name'}
-              placeholder={'Name'}
-              type={'text'}
-              register={register('name')}
-              error={errors.name?.message}
-              required
+              label={'Bottle count per case'}
+              placeholder={'Bottle count per case'}
+              type={'number'}
+              value={bottleCountPerCase}
+              onChange={(e) => setBottleCountPerCase(e.target.value)}
             />
             <InputForm
-              label={'Product Name'}
-              placeholder={'Name'}
-              type={'text'}
-              register={register('name')}
-              error={errors.name?.message}
-              required
+              label={'Per case buying cost'}
+              placeholder={'Per case buying cost'}
+              type={'number'}
+              value={perCaseBuyingCost}
+              onChange={(e) => setPerCaseBuyingCost(e.target.value)}
             />
             <InputForm
-              label={'Product Name'}
-              placeholder={'Name'}
-              type={'text'}
-              register={register('name')}
-              error={errors.name?.message}
-              required
+              label={'Plus'}
+              placeholder={'Plus'}
+              type={'number'}
+              value={plus}
+              onChange={(e) => setPlus(e.target.value)}
             />
           </div>
-          <div className="w-full h-full flex flex-row gap-2">
+          <div className="w-full h-full grid grid-cols-4 gap-2">
             <InputForm
-              label={'Product Name'}
-              placeholder={'Name'}
-              type={'text'}
-              register={register('name')}
-              error={errors.name?.message}
-              required
+              label={'Per bottler cost'}
+              placeholder={'Per bottler cost'}
+              type={'number'}
+              value={perBottleCost}
+              onChange={(e) => setPerBottleCost(e.target.value)}
             />
             <InputForm
-              label={'Product Name'}
-              placeholder={'Name'}
-              type={'text'}
-              register={register('name')}
-              error={errors.name?.message}
-              required
+              label={'Total cost'}
+              placeholder={'Total cost'}
+              type={'number'}
+              value={totalCost}
+              onChange={(e) => setTotalCost(e.target.value)}
             />
+          </div>
+        </div>
+        {/* qty on hand */}
+        <div className="w-full grid grid-cols-3 gap-2 mt-4">
+          <InputForm
+            label={'Qty on hand'}
+            placeholder={'Qty on hand'}
+            type={'number'}
+            value={qty}
+            onChange={(e) => {
+              setQty(e.target.value);
+            }}
+          />
+          <InputForm
+            label={'Profit margin (%)'}
+            placeholder={'Profit margin'}
+            value={profitMargin}
+            onChange={(e) => setProfitMargin(e.target.value)}
+            type={'number'}
+          />
+          <InputForm
+            label={'Retail price (USD)'}
+            placeholder={'Retail price'}
+            type={'number'}
+            value={retailPrice}
+            onChange={(e) => setRetailPrice(e.target.value)}
+            error={errors.unitPrice?.message}
+          />
+        </div>
+        {/* summary */}
+        <div className="w-full mt-4 p-2 bg-white shadow">
+          <h3 className="text-md font-semibold mb-3 uppercase">
+            Price Summary
+          </h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Unit Cost:</span>
+                <span className="font-medium">
+                  ${formValues.unitCost?.toFixed(2) || '0.00'}
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Profit Margin:</span>
+                <span className="font-medium">
+                  {Number(profitMargin).toFixed(2)}%
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Buying Price:</span>
+                <span className="font-medium">
+                  $ {Number(retailPrice).toFixed(2)}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
 

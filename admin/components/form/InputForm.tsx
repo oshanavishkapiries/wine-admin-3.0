@@ -11,6 +11,9 @@ export default function InputForm({
   required = false,
   register,
   error,
+  value,
+  onChange,
+  description,
 }: InputFormProps) {
   const id = useId();
   return (
@@ -24,8 +27,11 @@ export default function InputForm({
         placeholder={placeholder}
         type={type}
         className={cn(error && 'border-destructive')}
+        value={value}
+        onChange={onChange}
       />
       {error && <p className="text-sm text-red-500">{error}</p>}
+      {description && <p className="text-sm text-gray-500">{description}</p>}
     </div>
   );
 }

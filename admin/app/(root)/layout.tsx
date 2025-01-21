@@ -9,7 +9,7 @@ const layout = ({
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full min-h-screen bg-gray-100 flex flex-col">
+      <main className="w-full min-h-screen bg-gray-200 flex flex-col">
         <div className="w-fill h-[50px] flex flex-row p-4 items-center justify-between">
           <SidebarTrigger />
         </div>
