@@ -65,7 +65,7 @@ export const columns: ColumnDef<Product>[] = [
           <Button
             variant="ghost"
             className="flex h-8 w-8 p-0 hover:bg-muted"
-            onClick={() => router.push(`/products/edit/${product._id}`)}
+            onClick={() => router.push(`/products/edit-${product._id}`)}
             title="Edit product"
           >
             <Edit className="h-4 w-4" />

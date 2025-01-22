@@ -27,7 +27,9 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-const ProductAdd = () => {
+const ProductAdd = ({ params }: { params: { formType: string } }) => {
+  const { formType } = params;
+  console.log('id: ', formType?.split('-')[1]);
   const { data: metaData } = useGetMetaQuery(undefined, {
     pollingInterval: 40000,
     refetchOnMountOrArgChange: true,

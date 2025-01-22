@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { ArrowLeftIcon, Gift, Star, Package } from 'lucide-react';
+import { ArrowLeftIcon, Gift, Star, Package, Loader2 } from 'lucide-react';
 import { useGetAProductQuery } from '@/features/api/productSlice';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -15,7 +15,12 @@ const Page = ({ params }: { params: { id: string } }) => {
   console.log('product', product?.data);
   const router = useRouter();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <Loader2 className="w-10 h-10 animate-spin" />
+      </div>
+    );
 
   return (
     <div className="w-full h-full p-3">
@@ -56,13 +61,13 @@ const Page = ({ params }: { params: { id: string } }) => {
                         key={i}
                         className="w-5 h-5 fill-yellow-400 text-yellow-400"
                       />
-                    )   
+                    )
                   )}
                 </div>
                 {product?.data?.isGreatForGift && (
                   <Badge className="bg-secondary text-white">
                     <Gift className="w-4 h-4 mr-1" />
-                    Great for Gift  
+                    Great for Gift
                   </Badge>
                 )}
               </div>
@@ -73,7 +78,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                     <span className="text-2xl font-bold">
                       ${product?.data?.unitPrice}
                     </span>
-                    <Badge className={`${product?.data?.inStock ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+                    <Badge
+                      className={`${product?.data?.inStock ? 'bg-green-500' : 'bg-red-500'} text-white`}
+                    >
                       {product?.data?.inStock ? 'In Stock' : 'Out of Stock'}
                     </Badge>
                   </div>
@@ -91,7 +98,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Vintage</p>
-                    <p className="font-medium">{product?.data?.vintage?.year}</p>
+                    <p className="font-medium">
+                      {product?.data?.vintage?.year}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">ABV</p>
@@ -99,7 +108,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Dryness</p>
-                    <p className="font-medium">{product?.data?.dryness?.name}</p>
+                    <p className="font-medium">
+                      {product?.data?.dryness?.name}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Size</p>
@@ -118,7 +129,9 @@ const Page = ({ params }: { params: { id: string } }) => {
                     <span className="text-sm text-muted-foreground">
                       Country:{' '}
                     </span>
-                    <span className="font-medium">{product?.data?.country?.name}</span>
+                    <span className="font-medium">
+                      {product?.data?.country?.name}
+                    </span>
                   </p>
                   <p>
                     <span className="text-sm text-muted-foreground">
