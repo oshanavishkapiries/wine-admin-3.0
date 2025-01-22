@@ -25,6 +25,7 @@ import { useGetMetaQuery } from '@/features/api/metaSlice';
 import MultiselectForm from '@/components/form/MultiselectForm';
 import { getCategoryOptions } from '@/utils/categoryUtils';
 import { CategoryDiscountProps } from '@/types';
+import { Option } from '@/components/ui/multiselect';
 
 const categoryDiscountSchema = z.object({
   discountName: z.string().min(1, 'Discount name is required'),
@@ -76,6 +77,16 @@ export function CategoryDiscount({
     },
   });
 
+  const [selectedCategories, setSelectedCategories] = useState<Option[]>(
+    defaultValues?.categoryId?.map((item) => ({
+      label: item.name,
+      value: item._id,
+    })) || []
+  );
+
+
+
+
   const onSubmit = async (data: CategoryDiscountFormValues) => {
     console.log('data', data);
 
@@ -125,16 +136,14 @@ export function CategoryDiscount({
             <MultiselectForm
               label="Categories"
               options={categoryOptions}
-              onSelect={(value) =>
+              onSelect={(value) => {
+                setSelectedCategories(value);
                 reset({
                   ...defaultValues,
                   categoryId: value.map((item) => item.value),
-                })
-              }
-              defaultValue={defaultValues?.categoryId?.map((item) => ({
-                label: item.name,
-                value: item._id,
-              }))}
+                });
+              }}
+              defaultValue={selectedCategories}
               error={errors.categoryId?.message}
               required
             />
@@ -195,16 +204,3 @@ export function CategoryDiscount({
 
 export default CategoryDiscount;
 
-// {
-//     "discountName": "oshan",
-//     "discountType": "category",
-//     "categoryId": [
-//         "676ec4e6f96587b32ad9a6f6",
-//         "676ec4e5f96587b32ad9a6ee"
-//     ],
-//     "unitDiscount": 20,
-//     "packDiscount": 0,
-//     "startDate": "2024-01-01",
-//     "endDate": "2024-01-31",
-//     "isActive": true
-// }

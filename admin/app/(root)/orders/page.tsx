@@ -1,9 +1,7 @@
 'use client';
 
 import { useGetAllOrdersQuery } from '@/features/api/orderSlice';
-import { Input } from '@/components/ui/input';
-import { Loader2, Search } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import Dropdown from '@/components/form/DropDownForm';
 import { OrderStatus } from '@/types/enum';
@@ -12,8 +10,6 @@ import { DataTable } from '@/components/sections/order/data-table';
 import { getOrdersData, getTotalPages } from '@/utils/orderUtils';
 
 const ordersPage = () => {
-  const router = useRouter();
-  const [search, setSearch] = useState('');
   const [selectedOrderStatus, setSelectedOrderStatus] = useState<OrderStatus | null>(null);
   const [pagination, setPagination] = useState({
     pageIndex: 0,

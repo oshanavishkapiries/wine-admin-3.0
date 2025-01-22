@@ -1,4 +1,4 @@
-import { apiSlice } from "./apiSlice";
+import { apiSlice } from './apiSlice';
 
 interface Product {
   name: string;
@@ -11,18 +11,40 @@ interface Product {
   rating: number;
   qtyOnHand: number;
   isGreatForGift: boolean;
-  categories: string[];
-  subCategories: string[];
-  regions: string[];
+  categories: {
+    name: string;
+    subCategories: {
+      name: string;
+    };
+  };
+
+  regions: {
+    region: string;
+    subRegion: {
+      name: string;
+    }[];
+  };
   subRegions: string[];
-  dryness: string;
-  country: string;
-  vintage: string[];
+  dryness: {
+    name: string;
+  };
+  country: {
+    name: string;
+  };
+  vintage: {
+    year: string;
+  };
   abv: number;
-  sizeTypes: string[];
   collectables: string[];
   image?: string;
   inStock: boolean;
+  type: {
+    name: string;
+  }[];
+  isPack: boolean;
+  size: {
+    name: string;
+  };
 }
 
 interface ProductListParams {
@@ -45,17 +67,17 @@ export const productSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     productCreate: builder.mutation<Product, ProductCreateData>({
       query: (data) => ({
-        url: "/products/add",
-        method: "POST",
+        url: '/products/add',
+        method: 'POST',
         body: data,
       }),
-      invalidatesTags: ["Products"],
+      invalidatesTags: ['Products'],
     }),
 
     getAllProducts: builder.query<Product[], ProductListParams>({
       query: () => ({
         url: `/products?page=1&limit=100000`,
-        method: "GET",
+        method: 'GET',
       }),
       transformResponse: (response: any) => response.data.docs,
     }),
@@ -63,36 +85,36 @@ export const productSlice = apiSlice.injectEndpoints({
     productList: builder.query<Product[], ProductListParams>({
       query: ({ page, limit, categoryId, search }) => ({
         url: `/products?page=${page}&limit=${limit}&categoryId=${
-          categoryId ?? ""
-        }&search=${search ?? ""}`,
-        method: "GET",
+          categoryId ?? ''
+        }&search=${search ?? ''}`,
+        method: 'GET',
       }),
-      providesTags: ["Products"],
+      providesTags: ['Products'],
     }),
 
-    getAProduct: builder.query<Product, string>({
+    getAProduct: builder.query<ProductCreateData, string>({
       query: (id) => ({
         url: `/products/${id}`,
-        method: "GET",
+        method: 'GET',
       }),
-      providesTags: ["Products"],
+      providesTags: ['Products'],
     }),
 
     updateProduct: builder.mutation<Product, ProductUpdateData>({
       query: (data) => ({
         url: `/products/update/${data.id}`,
-        method: "PUT",
+        method: 'PUT',
         body: data.formData,
       }),
-      invalidatesTags: ["Products"],
+      invalidatesTags: ['Products'],
     }),
 
     deleteProduct: builder.mutation<void, string>({
       query: (id) => ({
         url: `/products/delete/${id}`,
-        method: "DELETE",
+        method: 'DELETE',
       }),
-      invalidatesTags: ["Products"],
+      invalidatesTags: ['Products'],
     }),
   }),
 });

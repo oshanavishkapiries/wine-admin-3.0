@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { ColumnDef } from '@tanstack/react-table';
 import { Edit, Eye, ScrollText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import ProductDeletePopup from './product-delete-popup';
 import { Order } from '@/types/order';
 
 export const columns: ColumnDef<Order>[] = [

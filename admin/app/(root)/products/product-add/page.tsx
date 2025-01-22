@@ -21,7 +21,7 @@ import {
   varientOptions,
 } from '@/utils/productAddFormUtils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeftIcon } from 'lucide-react';
+import { ArrowLeftIcon, PlusIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -32,7 +32,7 @@ const ProductAdd = () => {
     pollingInterval: 40000,
     refetchOnMountOrArgChange: true,
   });
-  const [createProduct, { isLoading }] = useProductCreateMutation();
+  const [createProduct] = useProductCreateMutation();
   const router = useRouter();
   const {
     caseCount,
@@ -62,8 +62,8 @@ const ProductAdd = () => {
     defaultValues: {
       name: '',
       description: '',
-      abv: 0,
-      rating: 0,
+      abv: '',
+      rating: '',
       vintage: '',
       country: '',
       regions: '',
@@ -81,7 +81,7 @@ const ProductAdd = () => {
       isPack: false,
       pack: [],
       inStock: false,
-      isActive: false,
+      isActive: true,
     },
   });
 
@@ -89,12 +89,6 @@ const ProductAdd = () => {
   const [profitMargin, setProfitMargin] = useState('');
   const [retailPrice, setRetailPrice] = useState('');
   useEffect(() => {
-    if (qty) {
-      reset({
-        ...formValues,
-        qtyOnHand: Number(qty),
-      });
-    }
     if (perBottleCost) {
       reset({
         ...formValues,
@@ -106,11 +100,30 @@ const ProductAdd = () => {
     }
     if (formValues.unitCost) {
       setRetailPrice(
-        String(formValues.unitCost * (1 + Number(profitMargin) / 100))
+        String(formValues.unitCost * (1 + Number(profitMargin || 0) / 100))
       );
     }
-  }, [qty, formValues.categories, formValues.unitCost, perBottleCost]);
+  }, [formValues.categories, formValues.unitCost, perBottleCost]);
 
+  useEffect(() => {
+    if (qty) {
+      reset({
+        ...formValues,
+        qtyOnHand: Number(qty),
+      });
+    }
+  }, [qty]);
+
+  useEffect(() => {
+    if (retailPrice) {
+      reset({
+        ...formValues,
+        unitPrice: Number(retailPrice),
+      });
+    }
+  }, [retailPrice]);
+
+  console.log('formValues', formValues);
   const onSubmit = async (data: any) => {
     try {
       const res = await createProduct(data);
@@ -142,52 +155,6 @@ const ProductAdd = () => {
         <div className="grid grid-cols-3 gap-2 mt-3">
           {/* left */}
           <div className="col-span-1 w-full space-y-2">
-            {/* product name */}
-            <InputForm
-              label={'Product Name'}
-              placeholder={'Name'}
-              type={'text'}
-              register={register('name')}
-              error={errors.name?.message}
-              required
-            />
-
-            {/* product description */}
-            <InputForm
-              label={'Product Description'}
-              placeholder={'Description'}
-              type={'text'}
-              register={register('description')}
-              error={errors.description?.message}
-            />
-
-            {/* product ABV */}
-            <InputForm
-              label={'Product ABV'}
-              placeholder={'ABV'}
-              type={'number'}
-              register={register('abv', { valueAsNumber: true })}
-              error={errors.abv?.message}
-              required
-            />
-
-            {/* product rating */}
-            <InputForm
-              label={'Product Rating'}
-              placeholder={'Rating'}
-              type={'number'}
-              register={register('rating', { valueAsNumber: true })}
-              error={errors.rating?.message}
-            />
-
-            {/* product vintage */}
-            <InputForm
-              label={'Product Vintage'}
-              placeholder={'Vintage'}
-              type={'text'}
-              register={register('vintage')}
-              error={errors.vintage?.message}
-            />
             {/* categories */}
             <Dropdown
               disabled={!metaData}
@@ -201,6 +168,54 @@ const ProductAdd = () => {
               }}
               buttonVariant="outline"
               error={errors.categories?.message}
+              required
+            />
+
+            {/* varient */}
+            <Dropdown
+              disabled={
+                !(varientOptions(metaData, formValues.categories)?.length > 0)
+              }
+              label="Varient"
+              options={varientOptions(metaData, formValues.categories)}
+              onSelect={(value) => {
+                reset({
+                  ...formValues,
+                  subCategories: value,
+                });
+              }}
+              buttonVariant="outline"
+              error={errors.subCategories?.message}
+            />
+
+            {/* dryness */}
+            <Dropdown
+              disabled={!metaData}
+              label="Dryness"
+              options={drynessOptions(metaData)}
+              onSelect={(value) => {
+                reset({
+                  ...formValues,
+                  dryness: value,
+                });
+              }}
+              buttonVariant="outline"
+              error={errors.dryness?.message}
+              required
+            />
+            {/* sizes */}
+            <Dropdown
+              disabled={!metaData}
+              label="Sizes"
+              options={sizesOptions(metaData)}
+              onSelect={(value) => {
+                reset({
+                  ...formValues,
+                  size: value,
+                });
+              }}
+              buttonVariant="outline"
+              error={errors.size?.message}
               required
             />
           </div>
@@ -254,55 +269,6 @@ const ProductAdd = () => {
               buttonVariant="outline"
               error={errors.subRegions?.message}
             />
-            {/* dryness */}
-            <Dropdown
-              disabled={!metaData}
-              label="Dryness"
-              options={drynessOptions(metaData)}
-              onSelect={(value) => {
-                reset({
-                  ...formValues,
-                  dryness: value,
-                });
-              }}
-              buttonVariant="outline"
-              error={errors.dryness?.message}
-              required
-            />
-            {/* sizes */}
-            <Dropdown
-              disabled={!metaData}
-              label="Sizes"
-              options={sizesOptions(metaData)}
-              onSelect={(value) => {
-                reset({
-                  ...formValues,
-                  size: value,
-                });
-              }}
-              buttonVariant="outline"
-              error={errors.size?.message}
-              required
-            />
-            {/* varient */}
-            <Dropdown
-              disabled={
-                !(varientOptions(metaData, formValues.categories)?.length > 0)
-              }
-              label="Varient"
-              options={varientOptions(metaData, formValues.categories)}
-              onSelect={(value) => {
-                reset({
-                  ...formValues,
-                  subCategories: value,
-                });
-              }}
-              buttonVariant="outline"
-              error={errors.subCategories?.message}
-            />
-          </div>
-          {/* right */}
-          <div className="col-span-1 w-full space-y-2">
             {/* type */}
             <MultiselectForm
               label="Type"
@@ -315,6 +281,9 @@ const ProductAdd = () => {
               }}
               error={errors.type?.message}
             />
+          </div>
+          {/* right */}
+          <div className="col-span-1 w-full space-y-2">
             {/* image */}
             <ImageUploadForm
               label="Product Image"
@@ -338,6 +307,56 @@ const ProductAdd = () => {
               error={errors.greatForGift?.message}
             />
           </div>
+        </div>
+
+        <div className="w-full border-b opacity-50 border-primary mt-4"></div>
+        <div className="grid grid-cols-3 gap-2 mt-3">
+          {/* product name */}
+          <InputForm
+            label={'Product Name'}
+            placeholder={'Name'}
+            type={'text'}
+            register={register('name')}
+            error={errors.name?.message}
+            required
+          />
+
+          {/* product description */}
+          <InputForm
+            label={'Product Description'}
+            placeholder={'Description'}
+            type={'text'}
+            register={register('description')}
+            error={errors.description?.message}
+          />
+
+          {/* product ABV */}
+          <InputForm
+            label={'Product ABV (%)'}
+            placeholder={'ABV'}
+            type={'number'}
+            register={register('abv')}
+            error={errors.abv?.message}
+            required
+          />
+
+          {/* product rating */}
+          <InputForm
+            label={'Product Rating (0-5)'}
+            placeholder={'Rating'}
+            type={'number'}
+            register={register('rating')}
+            error={errors.rating?.message}
+          />
+
+          {/* product vintage */}
+          <InputForm
+            label={'Product Vintage (Year)'}
+            placeholder={'Vintage'}
+            type={'number'}
+            register={register('vintage')}
+            error={errors.vintage?.message}
+          />
         </div>
 
         {/* pricing */}
@@ -419,7 +438,6 @@ const ProductAdd = () => {
             type={'number'}
             value={retailPrice}
             onChange={(e) => setRetailPrice(e.target.value)}
-            error={errors.unitPrice?.message}
           />
         </div>
         {/* summary */}
@@ -451,11 +469,41 @@ const ProductAdd = () => {
           </div>
         </div>
 
+        {/* product pack */}
+        <div className="w-full border-b border-primary mt-4"></div>
+        <h2 className="text-md font-bold uppercase my-4">Product Pack</h2>
+        <div className="w-full h-full">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="isPack"
+                {...register('isPack')}
+                className="w-4 h-4 rounded border-gray-300"
+              />
+              <label htmlFor="isPack" className="text-sm font-medium">
+                Enable Pack
+              </label>
+            </div>
+
+            {formValues.isPack && (
+              <Button
+                type="button"
+                variant="outline"
+                className="flex items-center gap-2"
+              >
+                <PlusIcon className="w-4 h-4" />
+                Add Pack Item
+              </Button>
+            )}
+          </div>
+        </div>
+
         <button
           type="submit"
           className="px-4 mt-2 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
         >
-          test
+          Create Product
         </button>
       </form>
     </div>

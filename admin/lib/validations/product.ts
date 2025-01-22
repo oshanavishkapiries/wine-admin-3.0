@@ -19,11 +19,11 @@ export const productSchema = z.object({
   size: z.string().min(1, 'Size is required'),
   type: z.array(z.string()).optional(),
   abv: z
-    .number()
+    .string()
     .min(1, 'ABV cannot be less than 1%')
     .max(100, 'ABV cannot exceed 100%'),
   rating: z
-    .number()
+    .string()
     .min(0, 'Rating cannot be negative')
     .max(5, 'Rating cannot exceed 5'),
   greatForGift: z.boolean().optional(),
