@@ -1,3 +1,5 @@
+import { Option } from "@/components/ui/multiselect";
+
 export interface InputFormProps {
   label: string;
   placeholder?: string;
@@ -22,4 +24,35 @@ export interface IDropdownProps {
   required?: boolean;
   error?: string;
   defaultValue?: string;
+}
+
+export interface CheckBoxFormProps {
+  label: string;
+  subLabel?: string;
+  description?: string;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  error?: string;
+}
+
+export interface ImageUploadFormProps {
+  label: string;
+  subLabel?: string;
+  description?: string;
+  required?: boolean;
+  error?: string;
+  imageUrl?: string;
+  onImageChange: (imageUrl: string | null) => void;
+  className?: string;
+}
+
+export interface IMultiselectFormProps {
+  label: string;
+  required?: boolean;
+  placeholder?: string;
+  defaultValue?: Option[];
+  error?: string;
+  disabled?: boolean;
+  options?: Option[];
+  onSelect?: (value: Option[]) => void;
 }

@@ -37,7 +37,7 @@ const DeletePopup = ({ subCategoryId }: { subCategoryId: string }) => {
           className="flex h-8 w-8 p-0 hover:bg-muted text-destructive hover:text-destructive"
           title="Delete sub-category"
         >
-          <Trash className="h-4 w-4" />
+          <Trash className="h-4 w-4 text-red-500" />
           <span className="sr-only">Delete sub-category</span>
         </Button>
       </AlertDialogTrigger>

@@ -13,8 +13,12 @@ export type SubCategory = {
 
 export const subCategoryColumns: ColumnDef<SubCategory>[] = [
   {
-    accessorKey: 'name',
-    header: 'Name',
+    accessorKey: 'subCategoryName',
+    header: 'Sub Category Name',
+  },
+  {
+    accessorKey: 'categoryName',
+    header: 'Main Category Name',
   },
   {
     id: 'actions',

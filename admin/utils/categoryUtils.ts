@@ -5,7 +5,8 @@ export const getSubCategory = (metaData: any) => {
     item.subCategories.map((subItem: any) => {
       arr.push({
         _id: subItem._id,
-        name: subItem.name,
+        subCategoryName: subItem.name,
+        categoryName: item.name,
         categoryId: item._id,
       });
     });

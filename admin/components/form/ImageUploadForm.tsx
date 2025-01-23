@@ -12,17 +12,8 @@ import {
   useUploadImageMutation,
 } from '@/features/api/imageSlice';
 import { toast } from 'sonner';
+import { ImageUploadFormProps } from '@/types/form';
 
-interface ImageUploadFormProps {
-  label: string;
-  subLabel?: string;
-  description?: string;
-  required?: boolean;
-  error?: string;
-  imageUrl?: string;
-  onImageChange: (imageUrl: string | null) => void;
-  className?: string;
-}
 
 export default function ImageUploadForm({
   label,

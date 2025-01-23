@@ -39,7 +39,7 @@ const ProductDeletePopup = ({ product }: { product: Product }) => {
             className="flex h-8 w-8 p-0 hover:bg-muted text-destructive hover:text-destructive"
             title="Delete product"
           >
-            <Trash className="h-4 w-4" />
+            <Trash className="h-4 w-4 text-red-500" />
             <span className="sr-only">Delete product</span>
           </Button>
         </AlertDialogTrigger>

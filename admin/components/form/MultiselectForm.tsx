@@ -1,17 +1,9 @@
 import { Label } from '@/components/ui/label';
 import MultipleSelector, { Option } from '@/components/ui/multiselect';
+import { IMultiselectFormProps } from '@/types/form';
 import {  useId } from 'react';
 
-interface IMultiselectFormProps {
-  label: string;
-  required?: boolean;
-  placeholder?: string;
-  defaultValue?: Option[];
-  error?: string;
-  disabled?: boolean;
-  options?: Option[];
-  onSelect?: (value: Option[]) => void;
-}
+
 export default function MultiselectForm({
   label,
   defaultValue,

@@ -1,15 +1,9 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { CheckBoxFormProps } from '@/types/form';
 import { useId } from 'react';
 
-interface CheckBoxFormProps {
-  label: string;
-  subLabel?: string;
-  description?: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-  error?: string;
-}
+
 
 export default function CheckBoxForm({
   label,

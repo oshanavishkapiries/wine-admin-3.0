@@ -29,10 +29,7 @@ const promoCodeSchema = z.object({
     .number()
     .min(0, 'Unit discount must be at least 0')
     .max(100, 'Unit discount cannot exceed 100'),
-  packDiscount: z
-    .number()
-    .min(0, 'Pack discount must be at least 0')
-    .max(100, 'Pack discount cannot exceed 100'),
+  packDiscount: z.number().min(0, 'Pack discount must be at least 0').max(100, 'Pack discount cannot exceed 100').optional(),
   startDate: z.string().min(1, 'Start date is required'),
   endDate: z.string().min(1, 'End date is required'),
 });
@@ -74,7 +71,7 @@ export function Promocode({
         discountType: 'promotion',
         code: data.code,
         unitDiscount: data.unitDiscount,
-        packDiscount: data.packDiscount,
+        packDiscount: data.packDiscount || 0, 
         startDate: data.startDate,
         endDate: data.endDate,
         isActive: true,
@@ -135,7 +132,6 @@ export function Promocode({
                 placeholder="0"
                 register={register('packDiscount', { valueAsNumber: true })}
                 error={errors.packDiscount?.message}
-                required
               />
             </div>
 

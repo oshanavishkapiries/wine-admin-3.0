@@ -25,7 +25,16 @@ import { NavUser } from './nav-user';
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeader></SidebarHeader>
+      <SidebarHeader>
+        <div className="flex items-center gap-2 px-4 py-2">
+          <img
+            src="/logo.png"
+            alt="Wine Admin Logo"
+            className="h-8 w-auto"
+          />
+          <span className="font-semibold text-lg">Wine Admin</span>
+        </div>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
