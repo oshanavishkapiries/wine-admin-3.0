@@ -10,8 +10,7 @@ interface ProductDetailsProps {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ register, errors }) => {
   return (
-    <div className="flex flex-col gap-4 my-3 border-t-2 border-gray-200 pb-4">
-      <h2 className="text-lg font-bold mt-4">Product Details</h2>
+    <div className="flex flex-col gap-4 my-3 border-t-2 border-gray-200 py-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <InputForm
           label="Product Name"

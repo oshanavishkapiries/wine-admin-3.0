@@ -1,9 +1,9 @@
+'use client';
+
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { CheckBoxFormProps } from '@/types/form';
-import { useId } from 'react';
-
-
+import { useId, useState } from 'react';
 
 export default function CheckBoxForm({
   label,
@@ -14,12 +14,19 @@ export default function CheckBoxForm({
   error,
 }: CheckBoxFormProps) {
   const id = useId();
+  const [isChecked, setIsChecked] = useState(checked);
+
+  const handleChange = (value: boolean) => {
+    setIsChecked(value);
+    onChange(value);
+  };
+
   return (
     <div className="relative bg-background flex w-full items-start gap-2 rounded-lg border border-input p-4 shadow-sm shadow-black/5 has-[[data-state=checked]]:border-ring">
       <Checkbox
         id={id}
-        checked={checked}
-        onCheckedChange={onChange}
+        checked={isChecked}
+        onCheckedChange={handleChange}
         className="order-1 after:absolute after:inset-0 border-2 border-primary"
         aria-describedby={`${id}-description`}
       />
