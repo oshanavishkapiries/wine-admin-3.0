@@ -15,6 +15,8 @@ const CheckBoxAndImage: React.FC<CheckBoxAndImageProps> = ({
   errors,
   defaultValues,
 }) => {
+
+  console.log("defaultValues", defaultValues?.imageUrl);
   return (
     <div className="flex flex-col gap-4 my-3 border-t-2 border-gray-200 py-4">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

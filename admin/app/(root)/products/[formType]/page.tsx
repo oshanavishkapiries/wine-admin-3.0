@@ -30,24 +30,23 @@ const ProductAddAndUpdate = () => {
     dryness: 'dry',
     size: '750ml',
     type: ['red', 'white'],
-    inStock: false,
+    inStock: true,
     isActive: false,
-    greatForGift: false,
+    greatForGift: true,
     imageUrl:
-      'https://static.millesima.com/s3/attachements/editorial/h630px/how-many-ounces-in-a-glass-of-wine.jpg',
+      'https://i.ibb.co/xsBLZ7y/1.webp',
   };
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productDetails),
     defaultValues: productDefaultValues,
   });
   
-  console.log("watch()", watch())
+
   
 
   const onSubmit: SubmitHandler<ProductFormValues> = (data) => {

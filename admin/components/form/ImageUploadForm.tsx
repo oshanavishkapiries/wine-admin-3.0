@@ -7,13 +7,9 @@ import { ImagePlus, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import {
-  useGetImageQuery,
-  useUploadImageMutation,
-} from '@/features/api/imageSlice';
+import { useUploadImageMutation } from '@/features/api/imageSlice';
 import { toast } from 'sonner';
 import { ImageUploadFormProps } from '@/types/form';
-
 
 export default function ImageUploadForm({
   label,
@@ -26,7 +22,7 @@ export default function ImageUploadForm({
   className,
 }: ImageUploadFormProps) {
   const id = useId();
-  const { data: imageData } = useGetImageQuery(imageUrl, { skip: !imageUrl });
+  const [imageData, setImageData] = useState<string | null>(imageUrl || null);
   const [uploadImage] = useUploadImageMutation();
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -63,9 +59,10 @@ export default function ImageUploadForm({
   const handleRemoveImage = () => {
     onImageChange(null);
     setPreviewUrl(null);
+    setImageData(null);
   };
 
-  const displayUrl = imageData?.url || previewUrl;
+  const displayUrl = imageData || previewUrl;
 
   return (
     <div className={cn('space-y-2', className)}>
