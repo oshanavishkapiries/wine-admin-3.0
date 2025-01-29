@@ -1,5 +1,5 @@
 import { Label } from '@/components/ui/label';
-import MultipleSelector, { Option } from '@/components/ui/multiselect';
+import MultipleSelector from '@/components/ui/multiselect';
 import { IMultiselectFormProps } from '@/types/form';
 import {  useId } from 'react';
 

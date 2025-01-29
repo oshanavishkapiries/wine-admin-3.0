@@ -58,3 +58,8 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@page {
+  margin-bottom: 100px; /* Set 1-inch margin on bottom side */
+  margin-top: 50px;
+}
