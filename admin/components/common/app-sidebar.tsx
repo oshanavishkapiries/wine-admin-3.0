@@ -21,16 +21,19 @@ import {
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { NavUser } from './nav-user';
+import Image from 'next/image';
 
 export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
-          <img
+          <Image
             src="/logo.png"
             alt="Wine Admin Logo"
             className="h-8 w-auto"
+            width={100}
+            height={100}
           />
           <span className="font-semibold text-lg">Wine Admin</span>
         </div>

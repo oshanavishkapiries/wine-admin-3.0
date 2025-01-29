@@ -10,7 +10,7 @@ const layout = ({
     <SidebarProvider>
       <AppSidebar />
       <main className="w-full h-full flex flex-col">
-        <div className="w-fill h-[50px] flex flex-row p-4 items-center justify-between">
+        <div className="w-fill h-[50px] flex flex-row p-4 items-center justify-between print:hidden">
           <SidebarTrigger />
         </div>
 
