@@ -2,14 +2,18 @@
 import { useParams } from 'next/navigation';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
 import { ProductFormValues, WineSchema } from './validation';
 import FormInput from './components/FormInput';
 import { defaultProductValues } from './defaultValues';
-import { useGetAProductQuery } from '@/features/api/productSlice';
+import {
+  useGetAProductQuery,
+  useProductCreateMutation,
+  useUpdateProductMutation,
+} from '@/features/api/productSlice';
 import transformWineData from './transformWineData';
-import { use, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
 import {
   categoriesOptions,
@@ -27,14 +31,18 @@ import FormCheckbox from './components/FormCheckbox';
 import FormImageUpload from './components/FormImageUpload';
 import { Button } from '@/components/ui/button';
 import FormMultiSelect from './components/FormMultiSelect';
+import { toast } from 'sonner';
 
 const AddUpdatePage = () => {
   const params = useParams();
+  const router = useRouter();
   const formType = params?.formType as string;
   const mode = 'product' === formType?.split('-')[0] ? 'add' : 'edit';
   const id = formType?.split('-')[1];
   const { data: product, isLoading } = useGetAProductQuery(id);
   const { data: metaData, isLoading: metaloding } = useGetMetaQuery({});
+  const [createProduct, { isLoading: isCreating }] = useProductCreateMutation();
+  const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
   const {
     register,
@@ -54,7 +62,30 @@ const AddUpdatePage = () => {
     }
   }, [product]);
 
-  const onSubmit = (data: ProductFormValues) => {
+  const onSubmit = (data: any) => {
+    if (mode === 'add') {
+      createProduct(data)
+        .unwrap()
+        .then((res: any) => {
+          if (res.success) {
+            toast.success('Product added successfully');
+            router.push('/products');
+          } else {
+            toast.error(res.message);
+          }
+        });
+    } else {
+      updateProduct({ id, formData: data })
+        .unwrap()
+        .then((res: any) => {
+          if (res.success) {
+            toast.success('Product updated successfully');
+            router.push('/products');
+          } else {
+            toast.error(res.message);
+          }
+        });
+    }
     console.log('data', data);
   };
 
@@ -63,9 +94,9 @@ const AddUpdatePage = () => {
   // console.log('countryOptions', countryOptions(metaData));
   // console.log('typeOptions', typeOptions(metaData));
 
-  if (product) {
-    console.log('transformWineData', transformWineData(product?.data));
-  }
+  // if (product) {
+  //   console.log('transformWineData', transformWineData(product?.data));
+  // }
 
   return (
     <div className="w-full p-3">
