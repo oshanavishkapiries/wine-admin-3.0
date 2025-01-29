@@ -26,6 +26,7 @@ import { Separator } from '@/components/ui/separator';
 import FormCheckbox from './components/FormCheckbox';
 import FormImageUpload from './components/FormImageUpload';
 import { Button } from '@/components/ui/button';
+import FormMultiSelect from './components/FormMultiSelect';
 
 const AddUpdatePage = () => {
   const params = useParams();
@@ -33,7 +34,7 @@ const AddUpdatePage = () => {
   const mode = 'product' === formType?.split('-')[0] ? 'add' : 'edit';
   const id = formType?.split('-')[1];
   const { data: product, isLoading } = useGetAProductQuery(id);
-  const { data: metaData } = useGetMetaQuery({});
+  const { data: metaData, isLoading: metaloding } = useGetMetaQuery({});
 
   const {
     register,
@@ -57,8 +58,8 @@ const AddUpdatePage = () => {
     console.log('data', data);
   };
 
-  console.log('watch', watch());
-  console.log('product', product?.data);
+  // console.log('watch', watch());
+  // console.log('product', product?.data);
   // console.log('countryOptions', countryOptions(metaData));
   // console.log('typeOptions', typeOptions(metaData));
 
@@ -70,7 +71,7 @@ const AddUpdatePage = () => {
     <div className="w-full p-3">
       <h1 className="text-xl font-bold uppercase flex items-center gap-2">
         {formType === 'product-add' ? 'Product Add' : 'Product Edit'}
-        {mode === 'edit' && isLoading && (
+        {metaloding && isLoading && (
           <Loader2 className="w-4 h-4 animate-spin" />
         )}
       </h1>
@@ -97,13 +98,11 @@ const AddUpdatePage = () => {
           />
           <FormInput
             label="ABV"
-            type="number"
             {...register('abv', { valueAsNumber: true })}
             error={errors.abv?.message}
           />
           <FormInput
             label="Rating"
-            type="number"
             {...register('rating', { valueAsNumber: true })}
             error={errors.rating?.message}
           />
@@ -258,11 +257,45 @@ const AddUpdatePage = () => {
               <p className="text-red-500">{errors.size.message}</p>
             )}
           </div>
+
+          {metaData && (
+            <FormMultiSelect
+              label="Select Types"
+              name="types"
+              control={control}
+              options={typeOptions(metaData)}
+              defaultValues={watch().type}
+            />
+          )}
         </div>
 
         <Separator />
 
-        {/* clickbox */}
+        {/* calculator */}
+        <div className="grid grid-cols-3 gap-4 mt-3">
+          <FormInput
+            label="Product QTY"
+            {...register('qtyOnHand')}
+            error={errors.name?.message}
+            isRequired={true}
+          />
+          <FormInput
+            label="Product UnitCost"
+            {...register('unitCost')}
+            error={errors.name?.message}
+            isRequired={true}
+          />
+          <FormInput
+            label="Product RetailPrice"
+            {...register('unitPrice')}
+            error={errors.name?.message}
+            isRequired={true}
+          />
+        </div>
+
+        <Separator />
+
+        {/* clickbox & image */}
         <div className="grid grid-cols-3 gap-4 mt-3">
           <FormImageUpload
             name="image"

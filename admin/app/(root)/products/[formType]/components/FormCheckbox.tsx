@@ -33,8 +33,7 @@ export default function FormCheckbox({
           />
           <div className="grid grow gap-2">
             <Label htmlFor={id}>
-              {label}{" "}
-              
+              {label}{" "}   
             </Label>
             {description && (
               <p id={`${id}-description`} className="text-xs text-muted-foreground">

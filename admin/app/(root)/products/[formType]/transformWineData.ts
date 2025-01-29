@@ -12,7 +12,7 @@ const transformWineData = (input: any): any => {
     vintage: input.vintage?.year?.toString() || '',
     dryness: input.dryness?._id || '',
     size: input.size?._id || '',
-    type: input.type ? input.type.map((t: any) => t.name) : [],
+    type: input.type ? input.type.map((t: any) => t._id) : [],
     abv: input.abv || 0,
     rating: input.rating || 0,
     greatForGift: input.greatForGift || false,
