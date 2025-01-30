@@ -138,7 +138,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                       Region:{' '}
                     </span>
                     <span className="font-medium">
-                      {product?.data?.regions.region}
+                      {product?.data?.regions?.region}
                     </span>
                   </p>
                   <p>
@@ -163,7 +163,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                       Category:{' '}
                     </span>
                     <span className="font-medium">
-                      {product?.data?.categories.name}
+                      {product?.data?.categories?.name}
                     </span>
                   </p>
                   <p>
@@ -178,7 +178,7 @@ const Page = ({ params }: { params: { id: string } }) => {
                 <div className="flex flex-wrap gap-2">
                   <span className="text-sm text-muted-foreground">Type:</span>
                   {product?.data?.type.map((type, index) => (
-                    <Badge key={index} className=" text-white">
+                    <Badge key={index}>
                       {type.name}
                     </Badge>
                   ))}

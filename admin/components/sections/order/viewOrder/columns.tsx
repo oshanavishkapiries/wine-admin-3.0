@@ -13,17 +13,17 @@ export const columns: ColumnDef<Product>[] = [
   {
     accessorKey: 'quantity',
     header: 'Quantity',
-    cell: ({ row }) => `${row.original.quantity}`,
+    cell: ({ row }) => `${row.original?.quantity}`,
   },
   {
     accessorKey: 'name',
     header: 'Name',
-    cell: ({ row }) => `${row.original.product.name}`,
+    cell: ({ row }) => `${row.original?.product?.name}`,
   },
   {
     accessorKey: 'isPack',
     header: 'Type',
-    cell: ({ row }) => `${row.original.isPack ? 'Pack' : 'Bottle'}`,
+    cell: ({ row }) => `${row.original?.isPack ? 'Pack' : 'Bottle'}`,
   },
   {
     accessorKey: 'price',
@@ -35,7 +35,7 @@ export const columns: ColumnDef<Product>[] = [
 
       const packPrice = data?.isPack
         ? (data?.product?.pack?.find(
-            (pack: any) => pack.packSize === data?.packSize
+            (pack: any) => pack?.packSize === data?.packSize
           )?.packPrice ?? 0)
         : 0;
 
@@ -61,8 +61,8 @@ export const columns: ColumnDef<Product>[] = [
           <span className={discountPrice() > 0 ? 'line-through' : ''}>
             $
             {data.isPack
-              ? packPrice.toFixed(2)
-              : data.product.unitPrice.toFixed(2)}
+              ? packPrice?.toFixed(2)
+              : data?.product?.unitPrice?.toFixed(2)}
           </span>
           <span>
             {discountPrice() == 0 ? null : `$${discountPrice().toFixed(2)}`}

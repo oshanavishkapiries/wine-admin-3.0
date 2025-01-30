@@ -63,29 +63,29 @@ const AddUpdatePage = () => {
   }, [product]);
 
   const onSubmit = (data: any) => {
-    if (mode === 'add') {
-      createProduct(data)
-        .unwrap()
-        .then((res: any) => {
-          if (res.success) {
-            toast.success('Product added successfully');
-            router.push('/products');
-          } else {
-            toast.error(res.message);
-          }
-        });
-    } else {
-      updateProduct({ id, formData: data })
-        .unwrap()
-        .then((res: any) => {
-          if (res.success) {
-            toast.success('Product updated successfully');
-            router.push('/products');
-          } else {
-            toast.error(res.message);
-          }
-        });
-    }
+    // if (mode === 'add') {
+    //   createProduct(data)
+    //     .unwrap()
+    //     .then((res: any) => {
+    //       if (res.success) {
+    //         toast.success('Product added successfully');
+    //         router.push('/products');
+    //       } else {
+    //         toast.error(res.message);
+    //       }
+    //     });
+    // } else {
+    //   updateProduct({ id, formData: data })
+    //     .unwrap()
+    //     .then((res: any) => {
+    //       if (res.success) {
+    //         toast.success('Product updated successfully');
+    //         router.push('/products');
+    //       } else {
+    //         toast.error(res.message);
+    //       }
+    //     });
+    // }
     console.log('data', data);
   };
 
@@ -289,15 +289,13 @@ const AddUpdatePage = () => {
             )}
           </div>
 
-          {metaData && (
             <FormMultiSelect
               label="Select Types"
               name="types"
               control={control}
-              options={typeOptions(metaData)}
+              options={typeOptions(metaData) || []}
               defaultValues={watch().type}
             />
-          )}
         </div>
 
         <Separator />
@@ -306,20 +304,20 @@ const AddUpdatePage = () => {
         <div className="grid grid-cols-3 gap-4 mt-3">
           <FormInput
             label="Product QTY"
-            {...register('qtyOnHand')}
-            error={errors.name?.message}
+            {...register('qtyOnHand', { valueAsNumber: true })}
+            error={errors.qtyOnHand?.message}
             isRequired={true}
           />
           <FormInput
             label="Product UnitCost"
-            {...register('unitCost')}
-            error={errors.name?.message}
+            {...register('unitCost', { valueAsNumber: true })}
+            error={errors.unitCost?.message}
             isRequired={true}
           />
           <FormInput
             label="Product RetailPrice"
-            {...register('unitPrice')}
-            error={errors.name?.message}
+            {...register('unitPrice' , { valueAsNumber: true })}
+            error={errors.unitPrice?.message}
             isRequired={true}
           />
         </div>
@@ -356,9 +354,12 @@ const AddUpdatePage = () => {
           <div className="flex flex-col gap-4 justify-center items-center">
             <Button
               type="submit"
-              className="btn btn-primary w-[200px] rounded-full"
+              className="btn btn-primary w-[200px] rounded-full gap-2"
             >
-              Submit
+              {formType === 'product-add' ? 'Add Product' : 'Update Product'}
+              {
+                isCreating || isUpdating && <Loader2 className="h-4 w-4 animate-spin" />
+              }
             </Button>
           </div>
         </div>

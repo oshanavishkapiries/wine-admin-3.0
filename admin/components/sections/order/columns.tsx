@@ -14,17 +14,17 @@ export const columns: ColumnDef<Order>[] = [
     accessorKey: 'userName',
     header: 'User Name',
     cell: ({ row }) =>
-      `${row.original.user.firstName} ${row.original.user.lastName}`,
+      `${row.original?.user?.firstName} ${row.original?.user?.lastName}`,
   },
   {
     accessorKey: 'phone',
     header: 'Phone',
-    cell: ({ row }) => `${row.original.mobileNumber}`,
+    cell: ({ row }) => `${row.original?.mobileNumber}`,
   },
   {
     accessorKey: 'deliveryType',
     header: 'Delivery type',
-    cell: ({ row }) => `${row.original.deliveryType}`,
+    cell: ({ row }) => `${row.original?.deliveryType}`,
   },
   {
     accessorKey: 'quantity',
@@ -55,7 +55,7 @@ export const columns: ColumnDef<Order>[] = [
   {
     accessorKey: 'totalPrice',
     header: 'Total Price',
-    cell: ({ row }) => `$${row.original.totalAmount.toFixed(2)}`,
+    cell: ({ row }) => `$${row.original?.totalAmount?.toFixed(2)}`,
   },
   {
     accessorKey: 'status',
