@@ -63,29 +63,29 @@ const AddUpdatePage = () => {
   }, [product]);
 
   const onSubmit = (data: any) => {
-    // if (mode === 'add') {
-    //   createProduct(data)
-    //     .unwrap()
-    //     .then((res: any) => {
-    //       if (res.success) {
-    //         toast.success('Product added successfully');
-    //         router.push('/products');
-    //       } else {
-    //         toast.error(res.message);
-    //       }
-    //     });
-    // } else {
-    //   updateProduct({ id, formData: data })
-    //     .unwrap()
-    //     .then((res: any) => {
-    //       if (res.success) {
-    //         toast.success('Product updated successfully');
-    //         router.push('/products');
-    //       } else {
-    //         toast.error(res.message);
-    //       }
-    //     });
-    // }
+    if (mode === 'add') {
+      createProduct(data)
+        .unwrap()
+        .then((res: any) => {
+          if (res.success) {
+            toast.success('Product added successfully');
+            router.push('/products');
+          } else {
+            toast.error(res.message);
+          }
+        });
+    } else {
+      updateProduct({ id, formData: data })
+        .unwrap()
+        .then((res: any) => {
+          if (res.success) {
+            toast.success('Product updated successfully');
+            router.push('/products');
+          } else {
+            toast.error(res.message);
+          }
+        });
+    }
     console.log('data', data);
   };
 
@@ -289,13 +289,15 @@ const AddUpdatePage = () => {
             )}
           </div>
 
+          {metaData && (
             <FormMultiSelect
               label="Select Types"
-              name="types"
+              name="type"
               control={control}
               options={typeOptions(metaData) || []}
               defaultValues={watch().type}
             />
+          )}
         </div>
 
         <Separator />
@@ -316,7 +318,7 @@ const AddUpdatePage = () => {
           />
           <FormInput
             label="Product RetailPrice"
-            {...register('unitPrice' , { valueAsNumber: true })}
+            {...register('unitPrice', { valueAsNumber: true })}
             error={errors.unitPrice?.message}
             isRequired={true}
           />
@@ -357,9 +359,8 @@ const AddUpdatePage = () => {
               className="btn btn-primary w-[200px] rounded-full gap-2"
             >
               {formType === 'product-add' ? 'Add Product' : 'Update Product'}
-              {
-                isCreating || isUpdating && <Loader2 className="h-4 w-4 animate-spin" />
-              }
+              {isCreating ||
+                (isUpdating && <Loader2 className="h-4 w-4 animate-spin" />)}
             </Button>
           </div>
         </div>
