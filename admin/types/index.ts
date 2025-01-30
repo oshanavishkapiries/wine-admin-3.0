@@ -30,18 +30,24 @@ export interface CategoryDiscountProps {
     };
   }
 
-  export interface CategoryPopupProps {
+
+  export interface ProductFormProps {
     children: React.ReactNode;
     mode?: 'add' | 'edit';
     title?: string;
     description?: string;
-    defaultValues?: {
+    defaultValues?:  {
       id?: string;
-      categoryId?: string;
-      subCategoryName?: string;
-      margin?: number;
+      discountName?: string;
+      productId?: { name: string; _id: string }[];
+      unitDiscount?: number;
+      packDiscount?: number;
+      startDate?: string;
+      endDate?: string;
     };
   }
+  
+
 
   export type Discount = {
     _id: string;
@@ -55,5 +61,6 @@ export interface CategoryDiscountProps {
     isActive: boolean;
     code: string;
     categoryId: { name: string; _id: string }[];
+    productId:{ name: string; _id: string }[];
   };
   

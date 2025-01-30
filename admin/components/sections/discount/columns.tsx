@@ -26,6 +26,7 @@ import { useState } from 'react';
 import Promocode from './promocode';
 import CategoryDiscount from './category';
 import { Discount } from '@/types';
+import ProductModel from './productmodel';
 
 
 export const columns: ColumnDef<Discount>[] = [
@@ -143,6 +144,24 @@ export const columns: ColumnDef<Discount>[] = [
               <Edit className="h-4 w-4" />
             </CategoryDiscount>
           )}
+
+          {
+            discount.discountType === 'product' && (
+              <ProductModel  mode="edit"
+              title="Edit  Discount"
+              description="Edit category-based discount details"
+              defaultValues={{
+                discountName: discount.discountName,
+                productId: discount.productId,
+                unitDiscount: discount.unitDiscount,
+                packDiscount: discount.packDiscount,
+                startDate: discount.startDate,
+                endDate: discount.endDate,
+              }}>
+                <Edit className="h-4 w-4" />
+              </ProductModel>
+            )
+          }
 
           <AlertDialog>
             <AlertDialogTrigger asChild>

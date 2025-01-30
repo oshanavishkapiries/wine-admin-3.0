@@ -11,6 +11,7 @@ import { ChevronDown } from 'lucide-react';
 import Promocode from './promocode';
 import CategoryDiscount from './category';
 import { useState } from 'react';
+import ProductModel from './productmodel';
 
 export default function AddDropDown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,8 +45,14 @@ export default function AddDropDown() {
             </DropdownMenuItem>
           </div>
         </CategoryDiscount>
-
-        <DropdownMenuItem>Product</DropdownMenuItem>
+        
+        <ProductModel mode="add">
+          <div onMouseDown={(e) => e.preventDefault()}>
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              Product
+            </DropdownMenuItem>
+          </div>
+        </ProductModel>
       </DropdownMenuContent>
     </DropdownMenu>
   );
