@@ -27,30 +27,9 @@ export const columns: ColumnDef<Order>[] = [
     cell: ({ row }) => `${row.original?.deliveryType}`,
   },
   {
-    accessorKey: 'quantity',
-    header: 'Quantity',
-    cell: ({ row }) => (
-      <div className="flex flex-col items-center gap-2">
-        <div>
-          <span className="text-muted-foreground">B: </span>
-          <span>
-            {row.original.products.reduce(
-              (acc, { quantity, isPack }) => (isPack ? acc : acc + quantity),
-              0
-            )}
-          </span>
-        </div>
-        <div>
-          <span className="text-muted-foreground">P: </span>
-          <span>
-            {row.original.products.reduce(
-              (acc, { quantity, isPack }) => (!isPack ? acc : acc + quantity),
-              0
-            )}
-          </span>
-        </div>
-      </div>
-    ),
+    accessorKey: 'item',
+    header: 'Items',
+    cell: ({ row }) => row.original.products.length,
   },
   {
     accessorKey: 'totalPrice',

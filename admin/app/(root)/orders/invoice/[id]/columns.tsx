@@ -12,8 +12,8 @@ export interface Product {
 const packPrice = (data: any) => {
   return data?.isPack
     ? (data?.product?.pack?.find(
-        (pack: any) => pack.packSize === data?.packSize
-      )?.packPrice ?? 0)
+      (pack: any) => pack.packSize === data?.packSize
+    )?.packPrice ?? 0)
     : 0;
 };
 
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Product>[] = [
     cell: ({ row }) => (
       <div className="flex flex-col">
         <span>{row.original.product.name}</span>
-        <span>{row.original.product.size.name}</span>
+        <span>{row.original?.product?.size?.name}</span>
       </div>
     ),
   },

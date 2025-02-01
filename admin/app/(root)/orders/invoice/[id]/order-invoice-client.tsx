@@ -10,22 +10,22 @@ import { Button } from '@/components/ui/button';
 
 const CompanyAddress = () => {
   return (
-    <div className=" max-w-sm space-y-2 print:space-y-1">
-      <h2 className="text-lg font-semibold">Company Address</h2>
+    <div className="max-w-sm space-y-2 print:space-y-1">
+      <h2 className="text-lg font-semibold print:text-base">Company Address</h2>
       <div className="flex items-start gap-2">
-        <MapPin className="w-5 h-5 " />
+        <MapPin className="w-5 h-5 print:w-5 print:h-5" />
         <p>2517 Broadway, New York, NY 10025</p>
       </div>
       <div className="flex items-start gap-2">
-        <Phone className="w-5 h-5 " />
+        <Phone className="w-5 h-5 print:w-4 print:h-4" />
         <p>(212) 932-0990</p>
       </div>
       <div className="flex items-start gap-2">
-        <Globe className="w-5 h-5 " />
+        <Globe className="w-5 h-5 print:w-4 print:h-4" />
         <p>www.gothamwines.com</p>
       </div>
       <div className="flex items-start gap-2">
-        <Mail className="w-5 h-5 " />
+        <Mail className="w-5 h-5 print:w-4 print:h-4" />
         <p>gothamw.work@gmail.com</p>
       </div>
     </div>
@@ -41,14 +41,13 @@ const ShippingData = ({
   mobile: string;
   email: string;
 }) => {
-  console.log(address);
   return (
-    <div className=" max-w-sm space-y-2 print:space-y-1">
-      <h2 className="text-lg font-semibold">Shipping Information</h2>
+    <div className="max-w-sm space-y-2 print:space-y-1 print:border-l-2 print:border-gray-200 print:pl-2">
+      <h2 className="text-lg font-semibold print:text-base">Shipping Information</h2>
       <div className="flex items-start gap-2">
-        <MapPin className="w-5 h-5 " />
+        <MapPin className="w-5 h-5 print:w-5 print:h-5" />
         <div>
-          <p className="font-medium">{address.fullName}</p>
+          <p>{address.fullName}</p>
           <p>{address.streetAddress}</p>
           {address.additionalAddress && <p>{address.additionalAddress}</p>}
           <p>{`${address.city}, ${address.state} ${address.zipCode}`}</p>
@@ -69,10 +68,8 @@ const ShippingData = ({
 const OrderInvoiceClient: React.FC<any> = ({ order }) => {
   const router = useRouter();
 
-  console.log(order);
-
   return (
-    <div className="min-h-screen p-6 font-sans flex flex-col gap-5 print:gap-2 print:m-5">
+    <div className="min-h-screen p-6 print:p-1 font-sans flex flex-col gap-5 print:gap-2">
       <Button
         className="w-fit print:hidden"
         onClick={() => router.push('/orders')}
@@ -80,13 +77,15 @@ const OrderInvoiceClient: React.FC<any> = ({ order }) => {
         Back
       </Button>
       <h3 className="text-center print:mb-2">Order number : {order?._id}</h3>
+
+      {/* header image section */}
       <div className="grid grid-cols-3">
         <div>
           <Image
             src="https://tse4.mm.bing.net/th?id=OIP.mpGAb2hg3Q5VY5CWEp3_6QHaHa&pid=Api&P=0&h=220" // Replace with your image URL
             alt="Descriptive Alt Text"
-            width={150} // Desired width of the image
-            height={150} // Desired height of the image
+            width={75} // Desired width of the image
+            height={75} // Desired height of the image
             priority // Optionally set this to optimize above-the-fold images
           />
         </div>
@@ -107,11 +106,9 @@ const OrderInvoiceClient: React.FC<any> = ({ order }) => {
         </Card>
       </div>
 
-      <Card className="w-full p-6 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
+      {/* company address and shipping data section */}
+      <Card className="w-full p-3 print:p-2 print:rounded-none print:shadow-none print:border-gray-200 grid grid-cols-2">
         <CompanyAddress />
-      </Card>
-
-      <Card className="w-full p-6 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
         <ShippingData
           address={order?.shippingAddress}
           mobile={order?.mobileNumber}
@@ -119,22 +116,23 @@ const OrderInvoiceClient: React.FC<any> = ({ order }) => {
         />
       </Card>
 
-      <Card className="w-full p-6 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
+
+      <Card className="w-full p-3 print:text-sm print:p-1 print:rounded-none print:shadow-none print:border-gray-200">
         <p>
           Requested Ship Date :{' '}
           {order?.deliveryDate
             ? new Intl.DateTimeFormat('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-              }).format(new Date(order.deliveryDate))
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit',
+            }).format(new Date(order.deliveryDate))
             : 'N/A'}
         </p>
       </Card>
 
-      <Card className="w-full p-6 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
+      <Card className="w-full p-3 print:p-1 print:text-sm print:rounded-none print:shadow-none print:border-gray-200">
         <p>
           Special Instructions :{' '}
           {order?.userComments
@@ -143,7 +141,7 @@ const OrderInvoiceClient: React.FC<any> = ({ order }) => {
         </p>
       </Card>
 
-      <Card className="w-full p-6 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
+      <Card className="w-full p-3 print:p-1 print:text-sm print:rounded-none print:shadow-none print:border-gray-200">
         <p>Allow Subs. : {order?.editable ? 'Yes' : 'No'}</p>
       </Card>
 
@@ -152,7 +150,7 @@ const OrderInvoiceClient: React.FC<any> = ({ order }) => {
       <div className="grid grid-cols-3">
         <div></div>
         <div></div>
-        <Card className="w-full p-6 flex flex-col gap-2 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
+        <Card className="w-full p-3 flex flex-col gap-2 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
           <span>Subtotal : ${order?.totalAmount}</span>
           <span>Tax : ${(0.0).toFixed(2)}</span>
           <span>Shipping : ${(0.0).toFixed(2)}</span>
