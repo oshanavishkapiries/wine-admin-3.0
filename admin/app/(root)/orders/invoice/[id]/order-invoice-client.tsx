@@ -7,6 +7,8 @@ import { MapPin, Phone, Globe, Mail } from 'lucide-react';
 import { DataTable } from './data-table';
 import { columns } from './columns';
 import { Button } from '@/components/ui/button';
+import { useEffect, useState } from 'react';
+import { getOrderData } from '@/utils/orderDataUtils';
 
 const CompanyAddress = () => {
   return (
@@ -67,6 +69,24 @@ const ShippingData = ({
 
 const OrderInvoiceClient: React.FC<any> = ({ order }) => {
   const router = useRouter();
+
+  const [orderData, setOrderData] = useState<any>(null);
+  // Second useEffect to calculate order data
+  useEffect(() => {
+    if (!order) return;
+
+    const fetchOrderData = async () => {
+      try {
+        const data = await getOrderData({ order: { ...order } });
+        console.log(data);
+        setOrderData(data);
+      } catch (error) {
+        console.error('Error calculating order data:', error);
+      }
+    };
+
+    fetchOrderData();
+  }, [order]);
 
   return (
     <div className="min-h-screen p-6 print:p-1 font-sans flex flex-col gap-5 print:gap-2">
@@ -150,27 +170,28 @@ const OrderInvoiceClient: React.FC<any> = ({ order }) => {
       <div className="grid grid-cols-3">
         <div></div>
         <div></div>
-        <Card className="w-full p-3 flex flex-col gap-2 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
-          <span>Subtotal : ${order?.totalAmount}</span>
-          <span>Tax : ${(0.0).toFixed(2)}</span>
+        <Card className="w-full p-3 flex flex-col gap-0.5 print:p-2 print:rounded-none print:shadow-none print:border-gray-200">
+          <span>Subtotal : ${orderData?.subtotal}</span>
+          <span>Tax : ${orderData?.tax?.tax}</span>
           <span>Shipping : ${(0.0).toFixed(2)}</span>
+          <span>Total Discount : ${orderData?.totalDiscount}</span>
           <span>Total : ${order?.totalAmount}</span>
           <span>
-            Total Bottle : &nbsp;
+            Total Items : &nbsp;
             {order.products.reduce(
-              (acc: number, { quantity, isPack }: any) =>
-                isPack ? acc : acc + quantity,
+              (acc: number, { quantity }: any) =>
+                 acc + quantity,
               0
             )}
           </span>
-          <span>
+          {/* <span>
             Total Pack : &nbsp;
             {order.products.reduce(
               (acc: number, { quantity, isPack }: any) =>
                 !isPack ? acc : acc + quantity,
               0
             )}
-          </span>
+          </span> */}
         </Card>
       </div>
     </div>

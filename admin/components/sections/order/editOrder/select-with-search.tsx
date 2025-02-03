@@ -19,6 +19,7 @@ import {
   useUpdateOrderMutation,
 } from '@/features/api/orderSlice';
 import { useGetAllProductsQuery } from '@/features/api/productSlice';
+import { getOrderData } from '@/utils/orderDataUtils';
 
 interface OrderViewDialogProps {
   order: any | null;
@@ -46,10 +47,29 @@ export function OrderViewDialog({
     limit: 100,
   });
   const [updateOrder, { isLoading: isUpdating }] = useUpdateOrderMutation();
+  const [orderData, setOrderData] = useState<any>(null);
 
+
+  // First useEffect to set initial products
   useEffect(() => {
     if (order) setProducts([...order.products]);
   }, [order]);
+
+  // Second useEffect to calculate order data
+  useEffect(() => {
+    if (!order) return;
+
+    const fetchOrderData = async () => {
+      try {
+        const data = await getOrderData({ order: { ...order, products } });
+        setOrderData(data);
+      } catch (error) {
+        console.error('Error calculating order data:', error);
+      }
+    };
+
+    fetchOrderData();
+  }, [order, products]);
 
   if (!order) return null;
 
@@ -119,7 +139,8 @@ export function OrderViewDialog({
   };
 
   const handleSave = async () => {
-    const updatedData = { ...order, products };
+    const totalAmount = orderData?.total;
+    const updatedData = { ...order, products, totalAmount };
     try {
       const response = await updateOrder({
         orderId: order?._id,
