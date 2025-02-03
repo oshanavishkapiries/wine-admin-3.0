@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
 import {
   categoriesOptions,
+  categoryProfitMargin,
   countryOptions,
   drynessOptions,
   regionOptions,
@@ -32,6 +33,7 @@ import FormImageUpload from './components/FormImageUpload';
 import { Button } from '@/components/ui/button';
 import FormMultiSelect from './components/FormMultiSelect';
 import { toast } from 'sonner';
+import Calculator from './components/Calculator';
 
 const AddUpdatePage = () => {
   const params = useParams();
@@ -56,11 +58,31 @@ const AddUpdatePage = () => {
     defaultValues: defaultProductValues,
   });
 
+  const categoryId = watch('categories');
+  const margin = watch('margin');
+  const unitCost = watch('unitCost');
+
   useEffect(() => {
     if (product) {
       reset(transformWineData(product?.data));
     }
   }, [product]);
+
+  useEffect(() => {
+      reset({
+        ...watch(),
+        margin: categoryProfitMargin(categoryId, metaData),
+      });
+  }, [categoryId]);
+
+  useEffect(() => {
+    reset({
+      ...watch(),
+      unitPrice: unitCost + (unitCost * margin) / 100,
+    });
+  }, [unitCost, margin]);
+
+
 
   const onSubmit = (data: any) => {
     if (mode === 'add') {
@@ -89,7 +111,7 @@ const AddUpdatePage = () => {
     console.log('data', data);
   };
 
-  // console.log('watch', watch());
+  console.log('watch main form', watch());
   // console.log('product', product?.data);
   // console.log('countryOptions', countryOptions(metaData));
   // console.log('typeOptions', typeOptions(metaData));
@@ -122,10 +144,9 @@ const AddUpdatePage = () => {
             error={errors.description?.message}
           />
           <FormInput
-            label="Vintage"
+            label="Vintage (year)"
             {...register('vintage')}
             error={errors.vintage?.message}
-            isRequired={true}
           />
           <FormInput
             label="ABV"
@@ -174,6 +195,7 @@ const AddUpdatePage = () => {
                   value={field.value}
                   onChange={field.onChange}
                   label="Select Regions"
+                  disabled={!watch().country}
                   isRequired
                 />
               )}
@@ -197,10 +219,10 @@ const AddUpdatePage = () => {
                       watch().regions
                     ) || []
                   }
-                  value={field.value}
+                  value={field.value || ''}
                   onChange={field.onChange}
+                  disabled={!watch().regions}
                   label="Select subRegions"
-                  isRequired
                 />
               )}
             />
@@ -239,7 +261,8 @@ const AddUpdatePage = () => {
                   options={varientOptions(metaData, watch().categories) || []}
                   value={field.value}
                   onChange={field.onChange}
-                  label="Select subCategories"
+                  label="Select Varietal"
+                  disabled={!watch().categories}
                   isRequired
                 />
               )}
@@ -303,22 +326,42 @@ const AddUpdatePage = () => {
         <Separator />
 
         {/* calculator */}
+        <Calculator
+          onChange={(value: any) => {
+            console.log(value);
+            reset({
+              ...watch(),
+              unitCost: value.unitCost,
+              qtyOnHand: value.qty,
+            });
+          }}
+        />
         <div className="grid grid-cols-3 gap-4 mt-3">
           <FormInput
             label="Product QTY"
             {...register('qtyOnHand', { valueAsNumber: true })}
+            type='number'
             error={errors.qtyOnHand?.message}
             isRequired={true}
           />
           <FormInput
-            label="Product UnitCost"
+            label="Product UnitCost ($)"
             {...register('unitCost', { valueAsNumber: true })}
+             type='number'
             error={errors.unitCost?.message}
             isRequired={true}
           />
           <FormInput
-            label="Product RetailPrice"
+            label="Product Margin (%)"
+            {...register('margin', { valueAsNumber: true })}
+             type='number'
+            error={errors.margin?.message}
+            isRequired={true}
+          />
+          <FormInput
+            label="Product RetailPrice ($)"
             {...register('unitPrice', { valueAsNumber: true })}
+             type='number'
             error={errors.unitPrice?.message}
             isRequired={true}
           />
@@ -328,24 +371,17 @@ const AddUpdatePage = () => {
 
         {/* clickbox & image */}
         <div className="grid grid-cols-3 gap-4 mt-3">
-          <FormImageUpload
-            name="image"
-            control={control}
-            defaultImage={watch().image || ''}
-          />
+          <div>
+            <FormImageUpload
+              name="image"
+              control={control}
+              defaultImage={watch().image || ''}
+            />
+            {errors.image && (
+              <p className="text-red-500">{errors.image.message}</p>
+            )}
+          </div>
           <div className="flex flex-col gap-4">
-            <FormCheckbox
-              label="In Stock"
-              description="In Stock Product"
-              name="inStock"
-              control={control}
-            />
-            <FormCheckbox
-              label="Is Active"
-              description="Active Product"
-              name="isActive"
-              control={control}
-            />
             <FormCheckbox
               label="Great for Gift"
               description="Great for Gifting Product"

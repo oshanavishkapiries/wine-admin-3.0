@@ -19,6 +19,7 @@ interface DropdownProps {
   onChange: (value: string) => void;
   label: string;
   isRequired?: boolean;
+  disabled?: boolean;
 }
 
 export function FormDropdown({
@@ -27,6 +28,7 @@ export function FormDropdown({
   onChange,
   label,
   isRequired = false,
+  disabled = false,
 }: DropdownProps) {
   return (
     <div className="flex flex-col gap-2">
@@ -36,7 +38,7 @@ export function FormDropdown({
       </Label>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline">
+          <Button variant="outline" disabled={disabled}>
             {value
               ? options.find((option) => option.value === value)?.label
               : label}
@@ -53,6 +55,7 @@ export function FormDropdown({
             <DropdownMenuItem
               key={option.value}
               onClick={() => onChange(option.value)}
+              disabled={disabled}
             >
               {option.label}
             </DropdownMenuItem>
@@ -62,3 +65,4 @@ export function FormDropdown({
     </div>
   );
 }
+

@@ -13,15 +13,12 @@ import {
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
 import InputForm from '@/components/form/InputForm';
 import { z } from 'zod';
 
-import { useGetMetaQuery } from '@/features/api/metaSlice';
-import MultiselectForm from '@/components/form/MultiselectForm';
-import { getCategoryOptions } from '@/utils/categoryUtils';
+//import { useGetMetaQuery } from '@/features/api/metaSlice';
+//import { getCategoryOptions } from '@/utils/categoryUtils';
 
-import { Option } from '@/components/ui/multiselect';
 import { ProductFormProps } from '@/types';
 
 const productSchema = z.object({
@@ -51,15 +48,15 @@ export function ProductModel({
 }: ProductFormProps) {
   const [open, setOpen] = useState(false);
 
-  const { data: metaData } = useGetMetaQuery({});
+  //const { data: metaData } = useGetMetaQuery({});
 
-  const categoryOptions = getCategoryOptions(metaData);
+  //const categoryOptions = getCategoryOptions(metaData);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    reset,
+    //reset,
   } = useForm<ProductFormValues>({
     resolver: zodResolver(productSchema),
     defaultValues: {
