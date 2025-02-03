@@ -11,7 +11,7 @@ import {
   useUpdateProductMutation,
 } from '@/features/api/productSlice';
 import transformWineData from './transformWineData';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useGetMetaQuery } from '@/features/api/metaSlice';
@@ -60,7 +60,6 @@ const AddUpdatePage = () => {
 
   const categoryId = watch('categories');
   const margin = watch('margin');
-  const unitPrice = watch('unitPrice');
   const unitCost = watch('unitCost');
 
   useEffect(() => {

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { useId } from 'react';
 import { Controller } from 'react-hook-form';
 import { useUploadImageMutation } from '@/features/api/imageSlice';
+import Image from 'next/image';
 
 type FormImageUploadProps = {
   name: string;
@@ -41,6 +41,7 @@ export default function FormImageUpload({
       setIsLoading(false);
       toast.success('Image uploaded successfully!');
     } catch (error) {
+      console.log(error);
       toast.error('Failed to upload image.');
     }
   };
@@ -63,7 +64,7 @@ export default function FormImageUpload({
           />
           <div className="relative w-full h-48 border rounded-lg overflow-hidden flex items-center justify-center bg-background">
             {preview ? (
-              <img
+              <Image
                 src={preview}
                 alt="Uploaded preview"
                 className="w-full h-full object-cover"
