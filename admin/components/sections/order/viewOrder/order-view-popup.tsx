@@ -19,6 +19,7 @@ import { DataTable } from './data-table';
 import { columns } from './columns';
 
 export default function ViewOrder({ order }: { order: Order }) {
+
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending':
@@ -134,12 +135,12 @@ export default function ViewOrder({ order }: { order: Order }) {
                   {order.deliveryType} Date :
                   {order?.deliveryDate
                     ? new Intl.DateTimeFormat('en-US', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      }).format(new Date(order.deliveryDate))
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    }).format(new Date(order.deliveryDate))
                     : 'N/A'}
                 </p>
                 <br />
@@ -159,19 +160,19 @@ export default function ViewOrder({ order }: { order: Order }) {
                   <DataTable columns={columns} data={order.products} />
                 </div>
                 <div className="mt-2 space-y-4 text-end">
-                  Total Bottle : &nbsp;
+                  Total Items : &nbsp;
                   {order.products.reduce(
-                    (acc, { quantity, isPack }) =>
-                      isPack ? acc : acc + quantity,
+                    (acc, { quantity }) =>
+                      acc + quantity,
                     0
                   )}
-                  <br />
+                  {/* <br />
                   Total Pack : &nbsp;
                   {order.products.reduce(
                     (acc, { quantity, isPack }) =>
                       !isPack ? acc : acc + quantity,
                     0
-                  )}
+                  )} */}
                 </div>
                 <div className="mt-2 space-y-4 text-end">
                   Total Price: $ {order.totalAmount.toFixed(2)}
