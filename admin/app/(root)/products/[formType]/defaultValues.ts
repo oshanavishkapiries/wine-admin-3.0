@@ -8,7 +8,7 @@ export const defaultProductValues: ProductFormValues = {
   subRegions: '',
   categories: '',
   subCategories: '',
-  vintage: '',
+  vintage: 'None',
   dryness: '',
   size: '',
   type: [],
@@ -23,4 +23,5 @@ export const defaultProductValues: ProductFormValues = {
   pack: [],
   inStock: true,
   isActive: true,
+  margin:0,
 };

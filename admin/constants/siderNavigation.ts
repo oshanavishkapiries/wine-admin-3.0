@@ -1,4 +1,4 @@
-import { BaggageClaim, Box, LayoutDashboard, Percent, ListFilter, CircleDollarSign } from 'lucide-react';
+import { BaggageClaim, Box, LayoutDashboard, Percent, ListFilter, CircleDollarSign, MapPin } from 'lucide-react';
 
 type SiderNavigationItem = {
   title: string;
@@ -34,6 +34,11 @@ export const siderNavigation: SiderNavigationItem[] = [
         title: 'Profit Margin',
         url: '/products/profit-margin',
         icon: CircleDollarSign,
+      },
+      {
+        title: 'Country',
+        url: '/products/country',
+        icon: MapPin,
       }
     ],
   },

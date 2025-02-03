@@ -11,10 +11,10 @@ export const WineSchema = z.object({
   description: z.string().optional(),
   country: z.string().min(1, 'At least one country is required'),
   regions: z.string().min(1, 'At least one region is required'),
-  subRegions: z.string().min(1, 'At least one sub-region is required'),
+  subRegions: z.string().optional(),
   categories: z.string().min(1, 'At least one category is required'),
   subCategories: z.string().min(1, 'Sub-category ID is required'),
-  vintage: z.string().min(4, 'Vintage must be a valid year'),
+  vintage: z.string().optional(),
   dryness: z.string().min(1, 'At least one dryness is required'),
   size: z.string().min(1, 'At least one size is required'),
   type: z.array(z.string().min(1, 'Type ID is required')),
@@ -29,6 +29,7 @@ export const WineSchema = z.object({
   pack: z.array(PackSchema).optional(),
   inStock: z.boolean(),
   isActive: z.boolean(),
+  margin: z.number().min(0).max(100, 'Margin must be between 0 and 100'),
 });
 
 
