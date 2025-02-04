@@ -1,5 +1,7 @@
 import { apiSlice } from './apiSlice';
 
+type Status = "" | "pending" | "delivered" | "cancelled";
+
 export interface Product {
   product: any;
   quantity: number;
@@ -21,7 +23,7 @@ export interface Order {
   editable: boolean;
   deliveryType: 'Delivery' | 'Pickup';
   deliveryDate?: Date;
-  status: 'PENDING' | 'DELIVERED' | 'CANCELLED';
+  status: Status;
   statusMessage?: string;
   createdAt?: Date;
   updatedAt?: Date;
@@ -43,7 +45,7 @@ export interface OrdersResponse {
 export interface GetAllOrdersParams {
   page: number;
   limit: number;
-  status?: 'PENDING' | 'DELIVERED' | 'CANCELLED' | null;
+  status?: Status;
 }
 
 export interface OrderStatusUpdate {
@@ -68,8 +70,8 @@ export const orderApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Orders'],
     }),
     getAllOrders: builder.query<OrdersResponse, GetAllOrdersParams>({
-      query: ({ page, limit }) => ({
-        url: `/orders/orders?page=${page}&limit=${limit}`,
+      query: ({ page, limit, status }) => ({
+        url: `/orders/orders?page=${page}&limit=${limit}&status=${status}`,
         method: 'GET',
       }),
       providesTags: ['Orders'],
