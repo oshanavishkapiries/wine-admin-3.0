@@ -1,13 +1,13 @@
-import CustomButton from "@/components/sections/settings/CustomButton/CustomButton";
 import Image from "next/image";
+import CustomButton from "../../CustomButton/CustomButton";
 
 
-const HeroSection = ({backgroundImage, heroImage}:any) => {
+const HeroSection = ({ backgroundImage, heroImage }: any) => {
 
     return (
         <section
             className="relative w-full min-h-screen bg-black bg-cover bg-center overflow-hidden"
-            style={{backgroundImage: `url('${backgroundImage}')`}}
+            style={{ backgroundImage: `url('${backgroundImage}')` }}
         >
             <div className="absolute inset-0 bg-black opacity-40"></div>
 
@@ -40,7 +40,7 @@ const HeroSection = ({backgroundImage, heroImage}:any) => {
                     </p>
 
                     <div className="pt-4">
-                        <CustomButton text="Shop Now"/>
+                        <CustomButton text="Shop Now" />
                     </div>
                 </div>
 
@@ -54,12 +54,17 @@ const HeroSection = ({backgroundImage, heroImage}:any) => {
                                     src={heroImage}
                                     alt="Hero Wine Image"
                                     className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg object-cover"
+                                    width={1000}
+                                    height={1000}
                                 />
                                 <label className=' cursor-pointer z-50 absolute' htmlFor="hero">
                                     <div className='h-10 w-10 bg-white rounded-full text-black'>
                                         <Image className='rounded-full'
-                                             src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
-                                             alt=""/>
+                                            src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
+                                            alt=""
+                                            width={100}
+                                            height={100}
+                                        />
                                     </div>
                                 </label>
                             </div>
@@ -76,8 +81,11 @@ const HeroSection = ({backgroundImage, heroImage}:any) => {
             <label className=' cursor-pointer z-50 absolute right-10 bottom-10' htmlFor="heroBg">
                 <div className='h-10 w-10 bg-white rounded-full text-black'>
                     <Image className='rounded-full'
-                         src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
-                         alt=""/>
+                        src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
+                        alt=""
+                        width={100}
+                        height={100}
+                    />
                 </div>
             </label>
         </section>

@@ -37,12 +37,17 @@ const CardSection = ({ card1Image, card2Image, card3Image, card4Image }: CardSec
                     src={card.image}
                     alt={card.alt}
                     className="w-full h-auto object-cover "
+                    width={1000}
+                    height={1000}
                 />
                 <label className=' cursor-pointer z-50 absolute' htmlFor={`card${index+1}`}>
                   <div className='h-10 w-10 bg-white rounded-full text-black'>
                     <Image className='rounded-full'
                          src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
-                         alt=""/>
+                         alt=""
+                         width={100}
+                         height={100}
+                         />
                   </div>
                 </label>
               </div>

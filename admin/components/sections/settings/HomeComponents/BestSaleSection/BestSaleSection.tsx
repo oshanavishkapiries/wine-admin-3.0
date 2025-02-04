@@ -26,6 +26,8 @@ const BestSaleSection = () => {
                             alt='ks'
                             src={'https://www.alkovintages.com/wp-content/uploads/2019/09/dry-red.png'}
                             className="w-full h-[322px] transition-transform duration-300 ease-in-out transform group-hover:scale-150"
+                            width={1000}
+                            height={500}
                         />
 
                     </div>
