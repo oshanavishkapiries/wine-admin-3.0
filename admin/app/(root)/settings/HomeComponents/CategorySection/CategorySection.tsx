@@ -44,6 +44,8 @@ const CategorySection = ({ categoryImage }: { categoryImage: string }) => {
         <label className=' cursor-pointer z-50 float-end me-10 mb-10 ' htmlFor="categoryBg">
           <div className='h-10 w-10 bg-white rounded-full text-black'>
             <Image className='rounded-full'
+              width={200}
+              height={200}
                  src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                  alt=""/>
           </div>

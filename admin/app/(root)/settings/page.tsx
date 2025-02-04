@@ -92,10 +92,14 @@ const Setting = () => {
                             src={getImageBySection('promo1')} // Dynamically load banner image
                             alt="Promotional Image"
                             className="w-full h-auto object-cover shadow-lg"
+                            width={200}
+                            height={200}
                         />
                         <label className=' cursor-pointer z-50 absolute ' htmlFor="promo1">
                             <div className='h-10 w-10 bg-white rounded-full text-black'>
                                 <Image className='rounded-full'
+                                    width={200}
+                                    height={200}
                                     src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                                     alt="" />
                             </div>
@@ -116,16 +120,22 @@ const Setting = () => {
                             src={getImageBySection('promo2')} // Dynamically load promotion image
                             alt="Promotional Image"
                             className="w-full md:w-1/2 h-[460px] object-cover shadow-lg"
+                            width={200}
+                            height={200}
                         />
                         <Image
                             src={getImageBySection('promo3')} // Dynamically load another promotion image
                             alt="Promotional Image"
                             className="w-full md:w-1/2 h-[460px] object-cover shadow-lg"
+                            width={200}
+                            height={200}
                         />
                         <div className='absolute flex justify-around h-full items-center w-full'>
                             <label className=' cursor-pointer z-50 ' htmlFor="promo2">
                                 <div className='h-10 w-10 bg-white rounded-full text-black'>
                                     <Image className='rounded-full'
+                                      width={200}
+                                      height={200}
                                         src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                                         alt="" />
                                 </div>
@@ -133,6 +143,8 @@ const Setting = () => {
                             <label className=' cursor-pointer z-50 ' htmlFor="promo3">
                                 <div className='h-10 w-10 bg-white rounded-full text-black'>
                                     <Image className='rounded-full'
+                                      width={200}
+                                      height={200}
                                         src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                                         alt="" />
                                 </div>

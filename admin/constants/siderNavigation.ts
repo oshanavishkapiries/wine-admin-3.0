@@ -13,7 +13,7 @@ export const siderNavigation: SiderNavigationItem[] = [
     title: 'Dashboard',
     url: '/',
     icon: LayoutDashboard,
-    isActive: true,
+    subItems: [],
   },
   {
     title: 'Products',
@@ -48,8 +48,8 @@ export const siderNavigation: SiderNavigationItem[] = [
     icon: BaggageClaim,
   },
   {
-    title: 'Setting',
-    url: '/setting',
+    title: 'Settings',
+    url: '/settings',
     icon: Settings,
   },
 ];

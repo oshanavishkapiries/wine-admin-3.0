@@ -81,7 +81,7 @@ const Calculator = ({ onChange }: { onChange: (data: any) => void }) => {
 
   return (
     <div className="w-full p-4 bg-muted/50">
-      <h1 className="text-xl font-bold uppercase mb-2">Calculator</h1>
+      <h1 className="text-md font-bold uppercase mb-2">Receiving</h1>
       <div className="w-full grid grid-cols-4 gap-4">
         <FormInput
           label="Case Count"

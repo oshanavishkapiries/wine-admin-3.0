@@ -11,6 +11,8 @@ const ShopNowSection = ({ shopImage, spiritImage }: { shopImage: string,spiritIm
           <Image
               src={shopImage}
               alt="Shop Wine"
+              width={200}
+                            height={200}
               className="w-full h-full object-cover"
           />
           <div className="absolute bottom-4 left-4 text-white flex flex-col gap-5 ms-5">
@@ -20,6 +22,8 @@ const ShopNowSection = ({ shopImage, spiritImage }: { shopImage: string,spiritIm
           <label className=' cursor-pointer z-50 absolute right-10 bottom-10' htmlFor="shopWine">
             <div className='h-10 w-10 bg-white rounded-full text-black'>
               <Image className='rounded-full'
+                width={200}
+                height={200}
                    src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                    alt=""/>
             </div>
@@ -32,6 +36,8 @@ const ShopNowSection = ({ shopImage, spiritImage }: { shopImage: string,spiritIm
               src={spiritImage}
               alt="Shop Spirit"
               className="w-full h-full object-cover"
+              width={200}
+                            height={200}
           />
           <div className="absolute bottom-4 right-4 text-white flex flex-col gap-5 me-5">
             <h3 className="text-4xl font-bold mb-2">Shop Spirit</h3>
@@ -40,6 +46,8 @@ const ShopNowSection = ({ shopImage, spiritImage }: { shopImage: string,spiritIm
           <label className=' cursor-pointer z-50 absolute left-10 bottom-10' htmlFor="shopSpirits">
             <div className='h-10 w-10 bg-white rounded-full text-black'>
               <Image className='rounded-full'
+                width={200}
+                height={200}
                    src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                    alt=""/>
             </div>

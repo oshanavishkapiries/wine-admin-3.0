@@ -6,7 +6,7 @@ export interface InputFormProps {
   type?: string;
   required?: boolean;
   register?: any;
-  error?: string;
+  error?: string | null |  undefined;
   className?: string;
   value?: string | number;
   description?: string;

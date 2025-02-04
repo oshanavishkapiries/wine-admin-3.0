@@ -68,6 +68,8 @@ export default function FormImageUpload({
                 src={preview}
                 alt="Uploaded preview"
                 className="w-full h-full object-cover"
+                width={200}
+                height={200}
               />
             ) : (
               <span className="text-gray-500">No image selected</span>

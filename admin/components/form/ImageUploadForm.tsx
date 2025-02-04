@@ -85,6 +85,8 @@ export default function ImageUploadForm({
             <Image
               src={displayUrl}
               alt="Preview"
+              width={200}
+                            height={200}
               fill
               className="rounded-lg object-cover"
             />

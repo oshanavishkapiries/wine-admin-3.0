@@ -52,12 +52,16 @@ const HeroSection = ({backgroundImage, heroImage}:any) => {
                                 <Image
                                     loading='lazy'
                                     src={heroImage}
+                                    width={200}
+                            height={200}
                                     alt="Hero Wine Image"
                                     className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg rounded-lg object-cover"
                                 />
                                 <label className=' cursor-pointer z-50 absolute' htmlFor="hero">
                                     <div className='h-10 w-10 bg-white rounded-full text-black'>
                                         <Image className='rounded-full'
+                                          width={200}
+                                          height={200}
                                              src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                                              alt=""/>
                                     </div>
@@ -76,6 +80,8 @@ const HeroSection = ({backgroundImage, heroImage}:any) => {
             <label className=' cursor-pointer z-50 absolute right-10 bottom-10' htmlFor="heroBg">
                 <div className='h-10 w-10 bg-white rounded-full text-black'>
                     <Image className='rounded-full'
+                      width={200}
+                      height={200}
                          src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
                          alt=""/>
                 </div>
