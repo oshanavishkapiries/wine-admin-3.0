@@ -9,6 +9,7 @@ const baseQuery = fetchBaseQuery({
 export const imageUploadApi = createApi({
   reducerPath: "imageUploadApi",
   baseQuery,
+  tagTypes: ['Images'],
   endpoints: (builder) => ({
     uploadImage: builder.mutation({
       query: (data) => ({
@@ -16,6 +17,7 @@ export const imageUploadApi = createApi({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [{ type: 'Images' }],
     }),
     updateImage: builder.mutation({
       query: (data) => ({
@@ -23,6 +25,7 @@ export const imageUploadApi = createApi({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: [{ type: 'Images' }],
     }),
   }),
 });
