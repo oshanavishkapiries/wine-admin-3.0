@@ -45,7 +45,7 @@ export default function AddDropDown() {
             </DropdownMenuItem>
           </div>
         </CategoryDiscount>
-        
+
         <ProductModel mode="add">
           <div onMouseDown={(e) => e.preventDefault()}>
             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
