@@ -138,8 +138,10 @@ export default function ViewOrder({ order }: { order: Order }) {
                       year: 'numeric',
                       month: '2-digit',
                       day: '2-digit',
-                      hour: '2-digit',
-                      minute: '2-digit',
+                      ...(order.deliveryType !== 'Delivery' && {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })
                     }).format(new Date(order.deliveryDate))
                     : 'N/A'}
                 </p>

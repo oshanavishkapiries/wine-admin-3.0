@@ -9,9 +9,18 @@ export const imageSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: formData,
       }),
+      invalidatesTags: ["Images"],
+      transformResponse: (response: any) => response.data,
+    }),
+    getImage: builder.query({
+      query: () => ({
+        url: "/images/get-images",
+        method: "GET",
+      }),
+      providesTags: ["Images"],
       transformResponse: (response: any) => response.data,
     }),
   }),
 });
 
-export const { useUploadImageMutation } = imageSlice;
+export const { useUploadImageMutation, useGetImageQuery } = imageSlice;
