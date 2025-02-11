@@ -1,3 +1,4 @@
+import { metadata } from '@/app/layout';
 import { apiSlice } from './apiSlice';
 
 interface Country {
@@ -37,7 +38,7 @@ export const countrySlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Country'],
+      invalidatesTags: ['Country',"metaData"],
     }),
 
     countryUpdate: builder.mutation<Country, CountryUpdateData>({

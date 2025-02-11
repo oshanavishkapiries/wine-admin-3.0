@@ -9,6 +9,9 @@ import RegionTree from '@/components/sections/country/RegionTree';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormInput from '../[formType]/components/FormInput';
 import { FormDropdown } from '../[formType]/components/FormDropdown';
+import { useCountryCreateMutation } from '@/features/api/countrySlice';
+import { toast } from 'sonner';
+import Dropdown from '@/components/form/DropDownForm';
 
 const CountryPage = () => {
   const { data: metaData } = useGetMetaQuery({});
@@ -34,8 +37,18 @@ const CountryPage = () => {
   const [country, setCountry] = useState<string | undefined>();
   const [region, setRegion] = useState<string | undefined>();
 
-  const onSubmitSection1 = (data: any) => {
-    console.log('Section 1 submitted:', data);
+  const [createCountry] = useCountryCreateMutation();
+
+  const onSubmitSection1 = async (data: any) => {
+    await createCountry({
+      name: data.country,
+    })
+      .then(() => {
+        toast.success(' Country created successfully');
+      })
+      .catch(() => {
+        toast.success(' Error creating country');
+      });
   };
 
   const onSubmitSection2 = (data: any) => {
@@ -86,7 +99,22 @@ const CountryPage = () => {
                     <h2 className="font-semibold text-lg">
                       Section 2: Country & Region
                     </h2>
-                    <FormDropdown
+                    
+                    <Dropdown
+                      label={'Select Country'}
+                      options={regions.map((r: any) => ({
+                        label: r.name,
+                        value: r.code,
+                      }))}
+                      defaultValue={country || ''}
+                      onSelect={(value) => {
+                        console.log('value', value);
+                        setCountry(value);
+                        setValue('country', value);
+                      }}
+                    />
+                    
+                    {/* <FormDropdown
                       label="Select Country"
                       options={regions.map((r: any) => ({
                         label: r.name,
@@ -94,11 +122,12 @@ const CountryPage = () => {
                       }))}
                       value={country || ''}
                       onChange={(value) => {
+                        console.log('value', value);
                         setCountry(value);
                         setValue('country', value);
                       }}
                       isRequired
-                    />
+                    /> */}
                     <FormInput
                       label="Region"
                       {...register('region')}

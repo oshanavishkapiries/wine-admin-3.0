@@ -7,6 +7,7 @@ export const metaSlice = apiSlice.injectEndpoints({
         url: "meta-data/all",
         method: "GET",
       }),
+      providesTags: ['metaData'],
     }),
   }),
 });
