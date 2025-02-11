@@ -13,55 +13,73 @@ import {
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 import InputForm from '@/components/form/InputForm';
 import { z } from 'zod';
+import {
+  useAddDiscountMutation,
+  useGetDiscountsQuery,
+  useUpdateDiscountMutation,
+} from '@/features/api/discountSlice';
+import { useGetAllProductsQuery } from '@/features/api/productSlice';
+import MultiselectForm from '@/components/form/MultiselectForm';
+import { ProductDiscountProps } from '@/types';
+import { Option } from '@/components/ui/multiselect';
 
 //import { useGetMetaQuery } from '@/features/api/metaSlice';
 //import { getCategoryOptions } from '@/utils/categoryUtils';
 
-import { ProductFormProps } from '@/types';
-
-const productSchema = z.object({
-  description: z.string().optional(),
-  productId: z.array(z.string()).min(1, 'At least one category is required'),
+const productDiscountSchema = z.object({
+  id: z.string().optional(),
   discountName: z.string().min(1, 'Discount name is required'),
+  productId: z.array(z.string()).min(1, 'At least one product is required'),
   unitDiscount: z
     .number()
     .min(0, 'Unit discount must be at least 0')
-    .optional(),
+    .max(100, 'Unit discount cannot exceed 100'),
   packDiscount: z
     .number()
     .min(0, 'Pack discount must be at least 0')
+    .max(100, 'Pack discount cannot exceed 100')
     .optional(),
-  startDate: z.string().min(1, 'Start date is required').optional(),
-  endDate: z.string().min(1, 'End date is required').optional(),
+  startDate: z.string().min(1, 'Start date is required'),
+  endDate: z.string().min(1, 'End date is required'),
 });
 
-type ProductFormValues = z.infer<typeof productSchema>;
+type ProductDiscountFormValues = z.infer<typeof productDiscountSchema>;
 
-export function ProductModel({
+export function ProductDiscount({
   children,
   mode = 'add',
-  title = 'Add Product',
-  description = 'Add a new product.',
+  title = 'Add Product Discount',
+  description = 'Add a new product-based discount.',
   defaultValues,
-}: ProductFormProps) {
+}: ProductDiscountProps) {
   const [open, setOpen] = useState(false);
+  const { refetch: refetchDiscounts } = useGetDiscountsQuery({});
+  const [addDiscount] = useAddDiscountMutation();
+  const [updateDiscount] = useUpdateDiscountMutation();
+  const { data: products } = useGetAllProductsQuery({
+    page: 1,
+    limit: 100,
+  });
 
-  //const { data: metaData } = useGetMetaQuery({});
-
-  //const categoryOptions = getCategoryOptions(metaData);
+  const productOptions = products?.map((product: any) => ({
+    label: product.name,
+    value: product._id,
+  })) || [];
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    //reset,
-  } = useForm<ProductFormValues>({
-    resolver: zodResolver(productSchema),
+    reset,
+  } = useForm<ProductDiscountFormValues>({
+    resolver: zodResolver(productDiscountSchema),
     defaultValues: {
+      id: defaultValues?.id || '',
       discountName: defaultValues?.discountName || '',
-      productId: defaultValues?.productId?.map((item) => item._id) || [],
+      productId: defaultValues?.productId?.map((item: any) => item._id) || [],
       unitDiscount: defaultValues?.unitDiscount || 0,
       packDiscount: defaultValues?.packDiscount || 0,
       startDate: defaultValues?.startDate || '',
@@ -69,26 +87,50 @@ export function ProductModel({
     },
   });
 
-  const onSubmit = async (data: ProductFormValues) => {
+  const [selectedProducts, setSelectedProducts] = useState<Option[]>(
+    defaultValues?.productId?.map((item: any) => ({
+      label: item.name,
+      value: item._id,
+    })) || []
+  );
 
-    console.log("data" , data)
-    // try {
-    //   const response = await addProduct({
-    //     productName: data.productName,
-    //     categoryId: data.categoryId,
-    //     price: data.price,
-    //     stock: data.stock,
-    //     description: data.description,
-    //   });
-    //   console.log(response);
-    //   toast.success(`Product ${mode === 'add' ? 'added' : 'updated'} successfully`);
-    //   await refetchProducts();
-    //   setOpen(false);
-    //   reset();
-    // } catch (error) {
-    //   console.log(error);
-    //   toast.error('Failed to save product');
-    // }
+  const onSubmit = async (data: ProductDiscountFormValues) => {
+    try {
+      if (mode === 'add') {
+        await addDiscount({
+          discountName: data.discountName,
+          discountType: 'product',
+          productId: data.productId,
+          unitDiscount: data.unitDiscount,
+          packDiscount: data.packDiscount || 0,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          isActive: true,
+        }).unwrap();
+      } else {
+        await updateDiscount({
+          id: data.id, data: {
+            discountName: data.discountName,
+            discountType: 'product',
+            productId: data.productId,
+            unitDiscount: data.unitDiscount,
+            packDiscount: data.packDiscount || 0,
+            startDate: data.startDate,
+            endDate: data.endDate,
+          }
+        });
+      }
+
+      toast.success(
+        `Product discount ${mode === 'add' ? 'added' : 'updated'} successfully`
+      );
+      await refetchDiscounts();
+      setOpen(false);
+      reset();
+    } catch (error) {
+      console.error(error);
+      toast.error('Failed to save product discount');
+    }
   };
 
   return (
@@ -101,61 +143,74 @@ export function ProductModel({
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
 
-           <div className="grid gap-4 py-4">
-                      <InputForm
-                        label="Discount Name"
-                        placeholder="Enter discount name"
-                        register={register('discountName')}
-                        error={errors.discountName?.message}
-                        required
-                      />
-          
-                      
-          
-                      <div className="grid grid-cols-2 gap-4">
-                        <InputForm
-                          label="Unit Discount (%)"
-                          type="number"
-                          placeholder="0"
-                          register={register('unitDiscount', { valueAsNumber: true })}
-                          error={errors.unitDiscount?.message}
-                          required
-                        />
-          
-                        <InputForm
-                          label="Pack Discount (%)"
-                          type="number"
-                          placeholder="0"
-                          register={register('packDiscount', { valueAsNumber: true })}
-                          error={errors.packDiscount?.message}
-                        />
-                      </div>
-          
-                      <div className="grid grid-cols-2 gap-4">
-                        <InputForm
-                          label="Start Date"
-                          type="date"
-                          register={register('startDate')}
-                          error={errors.startDate?.message}
-                          required
-                        />
-          
-                        <InputForm
-                          label="End Date"
-                          type="date"
-                          register={register('endDate')}
-                          error={errors.endDate?.message}
-                          required
-                        />
-                      </div>
-                    </div>
+          <div className="grid gap-4 py-4">
+            <InputForm
+              label="Discount Name"
+              placeholder="Enter discount name"
+              register={register('discountName')}
+              error={errors.discountName?.message}
+              required
+            />
+
+            <MultiselectForm
+              label="Products"
+              options={productOptions}
+              onSelect={(value) => {
+                setSelectedProducts(value);
+                reset({
+                  ...defaultValues,
+                  productId: value.map((item) => item.value),
+                });
+              }}
+              defaultValue={selectedProducts}
+              error={errors.productId?.message}
+              required
+            />
+
+            <div className="grid grid-cols-2 gap-4">
+              <InputForm
+                label="Unit Discount (%)"
+                type="number"
+                placeholder="0"
+                register={register('unitDiscount', { valueAsNumber: true })}
+                error={errors.unitDiscount?.message}
+                required
+              />
+
+              <InputForm
+                label="Pack Discount (%)"
+                type="number"
+                placeholder="0"
+                register={register('packDiscount', { valueAsNumber: true })}
+                error={errors.packDiscount?.message}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <InputForm
+                label="Start Date"
+                type="date"
+                register={register('startDate')}
+                error={errors.startDate?.message}
+                required
+              />
+
+              <InputForm
+                label="End Date"
+                type="date"
+                register={register('endDate')}
+                error={errors.endDate?.message}
+                required
+              />
+            </div>
+          </div>
 
           <DialogFooter>
             <Button type="submit" disabled={isSubmitting}>
               {isSubmitting
                 ? 'Saving...'
                 : mode === 'add'
-                  ? 'Add Product'
+                  ? 'Add Product Discount'
                   : 'Save Changes'}
             </Button>
           </DialogFooter>
@@ -165,4 +220,4 @@ export function ProductModel({
   );
 }
 
-export default ProductModel;
+export default ProductDiscount;

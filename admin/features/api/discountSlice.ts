@@ -8,16 +8,16 @@ interface UpdateDiscountStateData {
 type DiscountType = 'category' | 'product' | 'all' | 'promotion';
 
 interface PromoCodeFormValues {
-    discountName: string;
-    discountType: DiscountType;
-    code?: string; 
-    categoryId?: string[];
-    productId?: string[]; 
-    unitDiscount: number;
-    packDiscount: number;
-    startDate: string; 
-    endDate: string; 
-    isActive: boolean;
+  discountName: string;
+  discountType: DiscountType;
+  code?: string;
+  categoryId?: string[];
+  productId?: string[];
+  unitDiscount: number;
+  packDiscount: number;
+  startDate: string;
+  endDate: string;
+  isActive?: boolean;
 }
 
 export const discountSlice = apiSlice.injectEndpoints({
@@ -47,6 +47,13 @@ export const discountSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    updateDiscount: builder.mutation<void, { id: string | undefined; data: PromoCodeFormValues }>({
+      query: ({ id, data }) => ({
+        url: `/discount/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -55,4 +62,5 @@ export const {
   useUpdateDiscountStateMutation,
   useDeleteDiscountMutation,
   useAddDiscountMutation,
+  useUpdateDiscountMutation,
 } = discountSlice;
