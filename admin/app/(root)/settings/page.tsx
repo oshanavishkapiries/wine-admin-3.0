@@ -1,15 +1,15 @@
 'use client'
 
+import AccessoriesSection from "@/components/sections/settings/HomeComponents/AccessoriesSection/AccessoriesSection";
+import BestSaleSection from "@/components/sections/settings/HomeComponents/BestSaleSection/BestSaleSection";
+import CardSection from "@/components/sections/settings/HomeComponents/CardSection/CardSection";
+import CategorySection from "@/components/sections/settings/HomeComponents/CategorySection/CategorySection";
+import GiftSection from "@/components/sections/settings/HomeComponents/GiftSection/GiftSection";
+import HeroSection from "@/components/sections/settings/HomeComponents/HeroSection/HeroSection";
+import MembershipSection from "@/components/sections/settings/HomeComponents/MembershipSection/MembershipSection";
+import ShopNowSection from "@/components/sections/settings/HomeComponents/ShopNowSection/ShopNowSection";
 import { useGetImageQuery } from "@/features/api/imageSlice";
 import { useUpdateImageMutation } from "@/features/api/imageUploadSlice";
-import AccessoriesSection from "./HomeComponents/AccessoriesSection/AccessoriesSection";
-import MembershipSection from "./HomeComponents/MembershipSection/MembershipSection";
-import ShopNowSection from "./HomeComponents/ShopNowSection/ShopNowSection";
-import GiftSection from "./HomeComponents/GiftSection/GiftSection";
-import HeroSection from "./HomeComponents/HeroSection/HeroSection";
-import CategorySection from "./HomeComponents/CategorySection/CategorySection";
-import BestSaleSection from "./HomeComponents/BestSaleSection/BestSaleSection";
-import CardSection from "./HomeComponents/CardSection/CardSection";
 import Image from "next/image";
 
 const Setting = () => {
@@ -92,16 +92,17 @@ const Setting = () => {
                             src={getImageBySection('promo1')} // Dynamically load banner image
                             alt="Promotional Image"
                             className="w-full h-auto object-cover shadow-lg"
-                            width={200}
-                            height={200}
+                            width={1920}
+                            height={460}
                         />
                         <label className=' cursor-pointer z-50 absolute ' htmlFor="promo1">
                             <div className='h-10 w-10 bg-white rounded-full text-black'>
                                 <Image className='rounded-full'
-                                    width={200}
-                                    height={200}
                                     src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
-                                    alt="" />
+                                    alt=""
+                                    width={100}
+                                    height={100}
+                                />
                             </div>
                         </label>
                     </div>
@@ -120,33 +121,35 @@ const Setting = () => {
                             src={getImageBySection('promo2')} // Dynamically load promotion image
                             alt="Promotional Image"
                             className="w-full md:w-1/2 h-[460px] object-cover shadow-lg"
-                            width={200}
-                            height={200}
+                            width={1920}
+                            height={460}
                         />
                         <Image
                             src={getImageBySection('promo3')} // Dynamically load another promotion image
                             alt="Promotional Image"
                             className="w-full md:w-1/2 h-[460px] object-cover shadow-lg"
-                            width={200}
-                            height={200}
+                            width={1920}
+                            height={460}
                         />
                         <div className='absolute flex justify-around h-full items-center w-full'>
                             <label className=' cursor-pointer z-50 ' htmlFor="promo2">
                                 <div className='h-10 w-10 bg-white rounded-full text-black'>
                                     <Image className='rounded-full'
-                                      width={200}
-                                      height={200}
                                         src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
-                                        alt="" />
+                                        alt=""
+                                        width={100}
+                                        height={100}
+                                    />
                                 </div>
                             </label>
                             <label className=' cursor-pointer z-50 ' htmlFor="promo3">
                                 <div className='h-10 w-10 bg-white rounded-full text-black'>
                                     <Image className='rounded-full'
-                                      width={200}
-                                      height={200}
                                         src="https://png.pngtree.com/png-clipart/20191121/original/pngtree-upload-vector-icon-with-transparent-background-png-image_5156946.jpg"
-                                        alt="" />
+                                        alt=""
+                                        width={100}
+                                        height={100}
+                                    />
                                 </div>
                             </label>
                         </div>

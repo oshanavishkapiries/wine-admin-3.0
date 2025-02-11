@@ -8,7 +8,6 @@ import RegionTree from '@/components/sections/country/RegionTree';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormInput from '../[formType]/components/FormInput';
-import { FormDropdown } from '../[formType]/components/FormDropdown';
 import {
   useCountryCreateMutation,
   useRegionCreateMutation,
@@ -33,7 +32,6 @@ const CountryPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<CountryFormValues>({
     resolver: zodResolver(countrySchema),
   });
