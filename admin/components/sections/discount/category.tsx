@@ -92,11 +92,10 @@ export function CategoryDiscount({
 
 
   const onSubmit = async (data: CategoryDiscountFormValues) => {
-    console.log('data', data);
 
     try {
       if (mode === 'add') {
-        const response = await addDiscount({
+        await addDiscount({
           discountName: data.discountName,
           discountType: 'category',
           categoryId: data.categoryId,
