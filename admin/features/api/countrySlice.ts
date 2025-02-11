@@ -6,6 +6,7 @@ interface Country {
 }
 
 interface Region {
+  id: string;
   region: string;
 }
 
@@ -38,7 +39,7 @@ export const countrySlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['Country',"metaData"],
+      invalidatesTags: ["metaData"],
     }),
 
     countryUpdate: builder.mutation<Country, CountryUpdateData>({
@@ -47,16 +48,16 @@ export const countrySlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { name: data.name },
       }),
-      invalidatesTags: ['Country'],
+      invalidatesTags: ['metaData'],
     }),
 
     regionCreate: builder.mutation<Region, Region>({
       query: (data) => ({
-        url: `/wineRegions/add/${data.region}`,
+        url: `/wineRegions/add/${data.id}`,
         method: 'POST',
         body: { region: data.region },
       }),
-      invalidatesTags: ['Region'],
+      invalidatesTags: ['metaData'],
     }),
 
     regionUpdate: builder.mutation<Region, RegionUpdateData>({
@@ -65,7 +66,7 @@ export const countrySlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { region: data.region },
       }),
-      invalidatesTags: ['Region'],
+      invalidatesTags: ['metaData'],
     }),
 
     subRegionCreate: builder.mutation<SubRegion, SubRegion>({
@@ -74,7 +75,7 @@ export const countrySlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['SubRegion'],
+      invalidatesTags: ['metaData'],
     }),
 
     subRegionUpdate: builder.mutation<SubRegion, SubRegionUpdateData>({
@@ -83,7 +84,7 @@ export const countrySlice = apiSlice.injectEndpoints({
         method: 'PUT',
         body: { name: data.name },
       }),
-      invalidatesTags: ['SubRegion'],
+      invalidatesTags: ['metaData'],
     }),
   }),
 });

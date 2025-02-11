@@ -69,10 +69,10 @@ const AddUpdatePage = () => {
   }, [product]);
 
   useEffect(() => {
-      reset({
-        ...watch(),
-        margin: categoryProfitMargin(categoryId, metaData),
-      });
+    reset({
+      ...watch(),
+      margin: categoryProfitMargin(categoryId, metaData),
+    });
   }, [categoryId]);
 
   useEffect(() => {
@@ -81,8 +81,6 @@ const AddUpdatePage = () => {
       unitPrice: unitCost + (unitCost * margin) / 100,
     });
   }, [unitCost, margin]);
-
-
 
   const onSubmit = (data: any) => {
     if (mode === 'add') {
@@ -95,6 +93,9 @@ const AddUpdatePage = () => {
           } else {
             toast.error(res.message);
           }
+        })
+        .catch(() => {
+          toast.error('Error adding product');
         });
     } else {
       updateProduct({ id, formData: data })
@@ -340,28 +341,28 @@ const AddUpdatePage = () => {
           <FormInput
             label="Product QTY"
             {...register('qtyOnHand', { valueAsNumber: true })}
-            type='number'
+            type="number"
             error={errors.qtyOnHand?.message}
             isRequired={true}
           />
           <FormInput
             label="Product UnitCost ($)"
             {...register('unitCost', { valueAsNumber: true })}
-             type='number'
+            type="number"
             error={errors.unitCost?.message}
             isRequired={true}
           />
           <FormInput
             label="Product Margin (%)"
             {...register('margin', { valueAsNumber: true })}
-             type='number'
+            type="number"
             error={errors.margin?.message}
             isRequired={true}
           />
           <FormInput
             label="Product RetailPrice ($)"
             {...register('unitPrice', { valueAsNumber: true })}
-             type='number'
+            type="number"
             error={errors.unitPrice?.message}
             isRequired={true}
           />
@@ -395,8 +396,9 @@ const AddUpdatePage = () => {
               className="btn btn-primary w-[200px] rounded-full gap-2"
             >
               {formType === 'product-add' ? 'Add Product' : 'Update Product'}
-              {isCreating ||
-                (isUpdating && <Loader2 className="h-4 w-4 animate-spin" />)}
+              {(isCreating || isUpdating) && (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              )}
             </Button>
           </div>
         </div>

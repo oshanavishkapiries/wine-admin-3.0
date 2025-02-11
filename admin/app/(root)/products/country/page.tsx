@@ -9,13 +9,17 @@ import RegionTree from '@/components/sections/country/RegionTree';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormInput from '../[formType]/components/FormInput';
 import { FormDropdown } from '../[formType]/components/FormDropdown';
-import { useCountryCreateMutation } from '@/features/api/countrySlice';
+import {
+  useCountryCreateMutation,
+  useRegionCreateMutation,
+  useSubRegionCreateMutation,
+} from '@/features/api/countrySlice';
 import { toast } from 'sonner';
 import Dropdown from '@/components/form/DropDownForm';
+import { countryOptions, regionOptions } from '../[formType]/utils';
 
 const CountryPage = () => {
   const { data: metaData } = useGetMetaQuery({});
-  const regions = metaData?.data?.country || [];
 
   const countrySchema = z.object({
     country: z.string().optional(),
@@ -34,10 +38,17 @@ const CountryPage = () => {
     resolver: zodResolver(countrySchema),
   });
 
-  const [country, setCountry] = useState<string | undefined>();
-  const [region, setRegion] = useState<string | undefined>();
+  const [country, setCountry] = useState<string>('');
+  const [region, setRegion] = useState<string>('');
 
   const [createCountry] = useCountryCreateMutation();
+  const [regionCountry] = useRegionCreateMutation();
+  const [subregion] = useSubRegionCreateMutation();
+
+  console.log(
+    'regionOptions(metaData, region)',
+    regionOptions(metaData, country)
+  );
 
   const onSubmitSection1 = async (data: any) => {
     await createCountry({
@@ -51,12 +62,31 @@ const CountryPage = () => {
       });
   };
 
-  const onSubmitSection2 = (data: any) => {
-    console.log('Section 2 submitted:', data);
+  const onSubmitSection2 = async (data: any) => {
+    await regionCountry({
+      id: country || '',
+      region: data.region,
+    })
+      .then(() => {
+        toast.success(' region created successfully');
+      })
+      .catch(() => {
+        toast.success(' Error creating region');
+      });
   };
 
-  const onSubmitSection3 = (data: any) => {
-    console.log('Section 3 submitted:', data);
+  const onSubmitSection3 = async (data: any) => {
+    await subregion({
+      countryId: country,
+      regionId: region,
+      subRegion: data.subregion,
+    })
+      .then(() => {
+        toast.success(' region created successfully');
+      })
+      .catch(() => {
+        toast.success(' Error creating region');
+      });
   };
 
   return (
@@ -67,7 +97,7 @@ const CountryPage = () => {
             <h1 className="text-xl font-bold uppercase">Country Management</h1>
           </div>
           <div className="w-full h-full grid grid-cols-2">
-            <RegionTree countries={regions} />
+            <RegionTree countries={metaData?.data?.country || []} />
             <div className="w-full h-full">
               <div>
                 {/* Section 1 */}
@@ -99,35 +129,16 @@ const CountryPage = () => {
                     <h2 className="font-semibold text-lg">
                       Section 2: Country & Region
                     </h2>
-                    
+
                     <Dropdown
                       label={'Select Country'}
-                      options={regions.map((r: any) => ({
-                        label: r.name,
-                        value: r.code,
-                      }))}
+                      options={countryOptions(metaData)}
                       defaultValue={country || ''}
                       onSelect={(value) => {
-                        console.log('value', value);
                         setCountry(value);
-                        setValue('country', value);
                       }}
                     />
-                    
-                    {/* <FormDropdown
-                      label="Select Country"
-                      options={regions.map((r: any) => ({
-                        label: r.name,
-                        value: r.code,
-                      }))}
-                      value={country || ''}
-                      onChange={(value) => {
-                        console.log('value', value);
-                        setCountry(value);
-                        setValue('country', value);
-                      }}
-                      isRequired
-                    /> */}
+
                     <FormInput
                       label="Region"
                       {...register('region')}
@@ -148,38 +159,26 @@ const CountryPage = () => {
                     <h2 className="font-semibold text-lg">
                       Section 3: Country, Region & Subregion
                     </h2>
-                    <FormDropdown
-                      label="Select Country"
-                      options={regions.map((r: any) => ({
-                        label: r.name,
-                        value: r.code,
-                      }))}
-                      value={country || ''}
-                      onChange={(value) => {
+
+                    <Dropdown
+                      label={'Select Country'}
+                      options={countryOptions(metaData)}
+                      defaultValue={country || ''}
+                      onSelect={(value) => {
                         setCountry(value);
-                        setValue('country', value);
                       }}
-                      isRequired
                     />
-                    <FormDropdown
-                      label="Select Region"
-                      options={
-                        country
-                          ? regions
-                              .find((r: any) => r.code === country)
-                              ?.regions.map((r: any) => ({
-                                label: r.name,
-                                value: r.code,
-                              })) || []
-                          : []
-                      }
-                      value={region || ''}
-                      onChange={(value) => {
+
+                    <Dropdown
+                      label={'Select Region'}
+                      options={regionOptions(metaData, country)}
+                      disabled={!country}
+                      defaultValue={region || ''}
+                      onSelect={(value) => {
                         setRegion(value);
-                        setValue('region', value);
                       }}
-                      isRequired
                     />
+
                     <FormInput
                       label="Subregion"
                       {...register('subregion')}
