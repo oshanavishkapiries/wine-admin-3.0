@@ -14,6 +14,22 @@ export interface CategoryDiscountProps {
     };
   }
 
+  export interface ProductDiscountProps {
+    children: React.ReactNode;
+    mode?: 'add' | 'edit';
+    title?: string;
+    description?: string;
+    defaultValues?: {
+      id?: string;
+      discountName?: string;
+      productId?: { name: string; _id: string }[];
+      unitDiscount?: number;
+      packDiscount?: number;
+      startDate?: string;
+      endDate?: string;
+    };
+  }
+
   export interface PromoCodeProps {
     children: React.ReactNode;
     mode?: 'add' | 'edit';
