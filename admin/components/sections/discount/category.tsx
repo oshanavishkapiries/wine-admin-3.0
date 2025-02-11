@@ -19,6 +19,7 @@ import { z } from 'zod';
 import {
   useAddDiscountMutation,
   useGetDiscountsQuery,
+  useUpdateDiscountMutation,
 } from '@/features/api/discountSlice';
 
 import { useGetMetaQuery } from '@/features/api/metaSlice';
@@ -28,6 +29,7 @@ import { CategoryDiscountProps } from '@/types';
 import { Option } from '@/components/ui/multiselect';
 
 const categoryDiscountSchema = z.object({
+  id: z.string().optional(),
   discountName: z.string().min(1, 'Discount name is required'),
   categoryId: z.array(z.string()).min(1, 'At least one category is required'),
   unitDiscount: z
@@ -56,6 +58,7 @@ export function CategoryDiscount({
   const [open, setOpen] = useState(false);
   const { refetch: refetchDiscounts } = useGetDiscountsQuery({});
   const [addDiscount] = useAddDiscountMutation();
+  const [updateDiscount] = useUpdateDiscountMutation();
   const { data: metaData } = useGetMetaQuery({});
 
   const categoryOptions = getCategoryOptions(metaData);
@@ -68,6 +71,7 @@ export function CategoryDiscount({
   } = useForm<CategoryDiscountFormValues>({
     resolver: zodResolver(categoryDiscountSchema),
     defaultValues: {
+      id: defaultValues?.id || '',
       discountName: defaultValues?.discountName || '',
       categoryId: defaultValues?.categoryId?.map((item) => item._id) || [],
       unitDiscount: defaultValues?.unitDiscount || 0,
@@ -91,17 +95,30 @@ export function CategoryDiscount({
     console.log('data', data);
 
     try {
-      const response = await addDiscount({
-        discountName: data.discountName,
-        discountType: 'category',
-        categoryId: data.categoryId,
-        unitDiscount: data.unitDiscount,
-        packDiscount: data.packDiscount || 0,
-        startDate: data.startDate,
-        endDate: data.endDate,
-        isActive: true,
-      });
-      console.log(response);
+      if (mode === 'add') {
+        const response = await addDiscount({
+          discountName: data.discountName,
+          discountType: 'category',
+          categoryId: data.categoryId,
+          unitDiscount: data.unitDiscount,
+          packDiscount: data.packDiscount || 0,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          isActive: true,
+        });
+      } else {
+        await updateDiscount({
+          id: data.id, data: {
+            discountName: data.discountName,
+            discountType: 'category',
+            categoryId: data.categoryId,
+            unitDiscount: data.unitDiscount,
+            packDiscount: data.packDiscount || 0,
+            startDate: data.startDate,
+            endDate: data.endDate,
+          }
+        });
+      }
       toast.success(
         `Category discount ${mode === 'add' ? 'added' : 'updated'} successfully`
       );

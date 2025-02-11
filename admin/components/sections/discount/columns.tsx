@@ -133,6 +133,7 @@ export const columns: ColumnDef<Discount>[] = [
               title="Edit Category Discount"
               description="Edit category-based discount details"
               defaultValues={{
+                id: discount._id,
                 discountName: discount.discountName,
                 categoryId: discount.categoryId,
                 unitDiscount: discount.unitDiscount,
@@ -151,6 +152,7 @@ export const columns: ColumnDef<Discount>[] = [
               title="Edit  Discount"
               description="Edit category-based discount details"
               defaultValues={{
+                id: discount._id,
                 discountName: discount.discountName,
                 productId: discount.productId,
                 unitDiscount: discount.unitDiscount,

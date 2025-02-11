@@ -19,6 +19,7 @@ import { z } from 'zod';
 import {
   useAddDiscountMutation,
   useGetDiscountsQuery,
+  useUpdateDiscountMutation,
 } from '@/features/api/discountSlice';
 import { useGetAllProductsQuery } from '@/features/api/productSlice';
 import MultiselectForm from '@/components/form/MultiselectForm';
@@ -29,6 +30,7 @@ import { Option } from '@/components/ui/multiselect';
 //import { getCategoryOptions } from '@/utils/categoryUtils';
 
 const productDiscountSchema = z.object({
+  id: z.string().optional(),
   discountName: z.string().min(1, 'Discount name is required'),
   productId: z.array(z.string()).min(1, 'At least one product is required'),
   unitDiscount: z
@@ -56,6 +58,7 @@ export function ProductDiscount({
   const [open, setOpen] = useState(false);
   const { refetch: refetchDiscounts } = useGetDiscountsQuery({});
   const [addDiscount] = useAddDiscountMutation();
+  const [updateDiscount] = useUpdateDiscountMutation();
   const { data: products } = useGetAllProductsQuery({
     page: 1,
     limit: 100,
@@ -74,6 +77,7 @@ export function ProductDiscount({
   } = useForm<ProductDiscountFormValues>({
     resolver: zodResolver(productDiscountSchema),
     defaultValues: {
+      id: defaultValues?.id || '',
       discountName: defaultValues?.discountName || '',
       productId: defaultValues?.productId?.map((item: any) => item._id) || [],
       unitDiscount: defaultValues?.unitDiscount || 0,
@@ -92,16 +96,30 @@ export function ProductDiscount({
 
   const onSubmit = async (data: ProductDiscountFormValues) => {
     try {
-      await addDiscount({
-        discountName: data.discountName,
-        discountType: 'product',
-        productId: data.productId,
-        unitDiscount: data.unitDiscount,
-        packDiscount: data.packDiscount || 0,
-        startDate: data.startDate,
-        endDate: data.endDate,
-        isActive: true,
-      }).unwrap();
+      if (mode === 'add') {
+        await addDiscount({
+          discountName: data.discountName,
+          discountType: 'product',
+          productId: data.productId,
+          unitDiscount: data.unitDiscount,
+          packDiscount: data.packDiscount || 0,
+          startDate: data.startDate,
+          endDate: data.endDate,
+          isActive: true,
+        }).unwrap();
+      } else {
+        await updateDiscount({
+          id: data.id, data: {
+            discountName: data.discountName,
+            discountType: 'product',
+            productId: data.productId,
+            unitDiscount: data.unitDiscount,
+            packDiscount: data.packDiscount || 0,
+            startDate: data.startDate,
+            endDate: data.endDate,
+          }
+        });
+      }
 
       toast.success(
         `Product discount ${mode === 'add' ? 'added' : 'updated'} successfully`
