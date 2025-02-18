@@ -4,14 +4,17 @@ FROM node:20-alpine AS builder
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Install system dependencies for Node packages
+RUN apk add --no-cache python3 make g++
 
-# Install dependencies
-RUN npm install --frozen-lockfile
+# Copy package.json and package-lock.json from the admin folder
+COPY admin/package.json admin/package-lock.json ./
 
-# Copy the rest of the application code
-COPY . .
+# Install dependencies using npm ci for better compatibility
+RUN npm ci || npm install
+
+# Copy the rest of the application code from the admin folder
+COPY admin .
 
 # Build the Next.js application
 RUN npm run build
