@@ -46,7 +46,6 @@ interface Product {
     name: string;
   };
 }
-
 interface ProductListParams {
   page: number;
   limit: number;
@@ -82,7 +81,7 @@ export const productSlice = apiSlice.injectEndpoints({
       transformResponse: (response: any) => response.data.docs,
     }),
 
-    productList: builder.query<Product[], ProductListParams>({
+    productList: builder.query<any, ProductListParams>({
       query: ({ page, limit, categoryId, search }) => ({
         url: `/products?page=${page}&limit=${limit}&categoryId=${
           categoryId ?? ''

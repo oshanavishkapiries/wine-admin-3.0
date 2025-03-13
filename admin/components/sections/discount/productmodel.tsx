@@ -21,7 +21,7 @@ import {
   useGetDiscountsQuery,
   useUpdateDiscountMutation,
 } from '@/features/api/discountSlice';
-import { useGetAllProductsQuery } from '@/features/api/productSlice';
+import { useGetAllProductsQuery, useProductListQuery } from '@/features/api/productSlice';
 import MultiselectForm from '@/components/form/MultiselectForm';
 import { ProductDiscountProps } from '@/types';
 import { Option } from '@/components/ui/multiselect';
@@ -59,15 +59,22 @@ export function ProductDiscount({
   const { refetch: refetchDiscounts } = useGetDiscountsQuery({});
   const [addDiscount] = useAddDiscountMutation();
   const [updateDiscount] = useUpdateDiscountMutation();
-  const { data: products } = useGetAllProductsQuery({
+  const [search, setSearch] = useState("");
+
+  const { data: products } = useProductListQuery({
     page: 1,
-    limit: 100,
+    limit: 10,
+    search: search,
+    categoryId: "",
   });
 
-  const productOptions = products?.map((product: any) => ({
-    label: product.name,
-    value: product._id,
-  })) || [];
+  let productOptions: Option[] = [];
+  if(products?.data?.docs?.length > 0){
+    productOptions = products?.data?.docs?.map((product: any) => ({
+      label: product.name,
+      value: product._id,
+    })) || [];
+  }
 
   const {
     register,
@@ -149,6 +156,13 @@ export function ProductDiscount({
               placeholder="Enter discount name"
               register={register('discountName')}
               error={errors.discountName?.message}
+              required
+            />
+
+            <InputForm
+              label="Search Product"
+              placeholder="Search product"
+              onChange={(e) => setSearch(e.target.value)}
               required
             />
 
