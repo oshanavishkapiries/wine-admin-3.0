@@ -2,7 +2,6 @@
 
 import { columns } from '@/components/sections/order/columns';
 import { DataTable } from '@/components/sections/order/data-table';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -13,7 +12,7 @@ import {
 } from '@/components/ui/select';
 import { useGetAllOrdersQuery } from '@/features/api/orderSlice';
 import { getOrdersData, getTotalPages } from '@/utils/orderUtils';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
 
 type Status = '' | 'pending' | 'delivered' | 'cancelled';
@@ -25,7 +24,6 @@ const OrderPage = () => {
   });
   const [status, setStatus] = useState<Status>('pending');
   const [search, setSearch] = useState<string | null>(null);
-  const searchRef = React.useRef<HTMLInputElement>(null);
 
   // const handleSearch = () => {
   //   if (searchRef.current) {

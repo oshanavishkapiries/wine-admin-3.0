@@ -21,7 +21,7 @@ import {
   useGetDiscountsQuery,
   useUpdateDiscountMutation,
 } from '@/features/api/discountSlice';
-import { useGetAllProductsQuery, useProductListQuery } from '@/features/api/productSlice';
+import { useProductListQuery } from '@/features/api/productSlice';
 import MultiselectForm from '@/components/form/MultiselectForm';
 import { ProductDiscountProps } from '@/types';
 import { Option } from '@/components/ui/multiselect';
