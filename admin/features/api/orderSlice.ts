@@ -1,6 +1,7 @@
+import { Search } from 'lucide-react';
 import { apiSlice } from './apiSlice';
 
-type Status = "" | "pending" | "delivered" | "cancelled";
+type Status = '' | 'pending' | 'delivered' | 'cancelled';
 
 export interface Product {
   product: any;
@@ -46,6 +47,7 @@ export interface GetAllOrdersParams {
   page: number;
   limit: number;
   status?: Status;
+  search?: string | null;
 }
 
 export interface OrderStatusUpdate {
@@ -70,8 +72,8 @@ export const orderApi = apiSlice.injectEndpoints({
       invalidatesTags: ['Orders'],
     }),
     getAllOrders: builder.query<OrdersResponse, GetAllOrdersParams>({
-      query: ({ page, limit, status }) => ({
-        url: `/orders/orders?page=${page}&limit=${limit}&status=${status}`,
+      query: ({ page, limit, status, search }) => ({
+        url: `/orders/orders?page=${page}&limit=${limit}&status=${status}&search=${search || ''}`,
         method: 'GET',
       }),
       providesTags: ['Orders'],

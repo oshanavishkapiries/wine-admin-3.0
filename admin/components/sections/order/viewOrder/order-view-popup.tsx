@@ -19,7 +19,6 @@ import { DataTable } from './data-table';
 import { columns } from './columns';
 
 export default function ViewOrder({ order }: { order: Order }) {
-
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
       case 'pending':
@@ -36,10 +35,10 @@ export default function ViewOrder({ order }: { order: Order }) {
   const formatAddress = (address: any) => {
     return (
       <div className="space-y-1">
-        <p className="font-medium">{address.fullName}</p>
-        <p>{address.streetAddress}</p>
-        {address.additionalAddress && <p>{address.additionalAddress}</p>}
-        <p>{`${address.city}, ${address.state} ${address.zipCode}`}</p>
+        <p className="font-medium">{address?.fullName}</p>
+        <p>{address?.streetAddress}</p>
+        {address?.additionalAddress && <p>{address?.additionalAddress}</p>}
+        <p>{`${address?.city}, ${address?.state} ${address?.zipCode}`}</p>
       </div>
     );
   };
@@ -73,15 +72,15 @@ export default function ViewOrder({ order }: { order: Order }) {
                       Customer Details
                     </h3>
                     <p className="mt-1 font-medium">
-                      {`Name : ${order.user.firstName} ${order.user.lastName}`.replace(
+                      {`Name : ${order?.user?.firstName} ${order?.user?.lastName}`.replace(
                         /\w\S*/g,
                         (txt) =>
                           txt.charAt(0).toUpperCase() +
                           txt.substr(1).toLowerCase()
                       )}
                     </p>
-                    <p className="text-sm">Phone : {order.user.email}</p>
-                    <p className="text-sm">Mobile : {order.mobileNumber}</p>
+                    <p className="text-sm">Phone : {order?.user?.email}</p>
+                    <p className="text-sm">Mobile : {order?.mobileNumber}</p>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-muted-foreground">
@@ -91,7 +90,7 @@ export default function ViewOrder({ order }: { order: Order }) {
                       <p>
                         Method:{' '}
                         <span className="font-medium">
-                          {order.paymentMethod}
+                          {order?.paymentMethod}
                         </span>
                       </p>
                       <p>
@@ -135,14 +134,14 @@ export default function ViewOrder({ order }: { order: Order }) {
                   {order.deliveryType} Date :
                   {order?.deliveryDate
                     ? new Intl.DateTimeFormat('en-US', {
-                      year: 'numeric',
-                      month: '2-digit',
-                      day: '2-digit',
-                      ...(order.deliveryType !== 'Delivery' && {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })
-                    }).format(new Date(order.deliveryDate))
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        ...(order.deliveryType !== 'Delivery' && {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }),
+                      }).format(new Date(order.deliveryDate))
                     : 'N/A'}
                 </p>
                 <br />
@@ -164,8 +163,7 @@ export default function ViewOrder({ order }: { order: Order }) {
                 <div className="mt-2 space-y-4 text-end">
                   Total Items : &nbsp;
                   {order.products.reduce(
-                    (acc, { quantity }) =>
-                      acc + quantity,
+                    (acc, { quantity }) => acc + quantity,
                     0
                   )}
                   {/* <br />
