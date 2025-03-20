@@ -8,6 +8,7 @@ import { ThemeProvider } from '@/components/ui/theme-provider';
 export const metadata: Metadata = {
   title: 'GOTHEM WINE ADMIN',
   description: '',
+  icons: 'https://res.cloudinary.com/dty982jiw/image/upload/v1742442903/ecommerce-site/logo/fdzqdh0xavjqwwxk2hup.png',
 };
 
 export default function RootLayout({

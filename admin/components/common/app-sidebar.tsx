@@ -29,7 +29,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
           <Image
-            src="/logo.png"
+            src="https://res.cloudinary.com/dty982jiw/image/upload/v1742442903/ecommerce-site/logo/fdzqdh0xavjqwwxk2hup.png"
             alt="Wine Admin Logo"
             className="h-8 w-auto"
             width={100}

@@ -86,7 +86,7 @@ export function LoginForm({
           </form>
           <div className="relative hidden bg-muted md:block">
             <Image
-              src="/auth-img.webp"
+              src="https://res.cloudinary.com/dty982jiw/image/upload/v1742442857/ecommerce-site/authImage/wvcr6iewwcmfmujck6vc.webp"
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
               width={500}
